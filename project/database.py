@@ -4,7 +4,7 @@ from flask import current_app, g
 
 def get_db():
     if 'db' not in g:
-        g.db = sqlite3.connect(current_app.config['DATABASE'])
+        return sqlite3.connect('schema.sql')
 
 def close_db():
     db = g.pop('db', None)
@@ -16,4 +16,7 @@ def init_db():
 
     with current_app.open_resource('schema.sql') as data_file:
         db.executescript(data_file.read().decode('utf8'))
+
+def init_app(app):
+    app.teardown_appcontext(close_db())
 

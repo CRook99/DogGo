@@ -1,9 +1,32 @@
-<h1>Register</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<form>
-    <label for = "email">Email:</label>
-    <input type = "text" id = "username" name = "username"><br>
-    <label for = "password">Password:</label>
-    <input type = "text" id = "password" name = "password"><br>
-    <input type = "button" id = "log_in" name = "log_in">Register</input>
-</form>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DogGo</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <h1 style="margin: 26px;margin-top: 20px;margin-right: 25px;margin-bottom: 25px;margin-left: 25px;width: 154px;font-weight: bold;">Register</h1>
+
+    <form method="post">
+        <div style="margin: 10px;margin-left: 25px;">
+            <input type="email" style="border-radius: 15px;transform: translate(0px);width: 300px;margin: 0px;border-color: var(--bs-gray-500);" placeholder="Email" name="email"/>
+        </div>
+        <div style="margin: 10px;margin-left: 25px;">
+            <input type="tel" style="width: 300px;border-radius: 15px;color: var(--bs-gray-900);background: var(--bs-white);border-color: var(--bs-gray-500);" placeholder="Telephone number" name=""telephoneNo/>
+        </div>
+        <div style="margin: 10px;margin-left: 25px;">
+            <input type="password" style="border-radius: 15px;width: 300px;border-color: var(--bs-gray-500);" placeholder="Password" name="password"/>
+        </div>
+        <div style="margin: 20px;margin-left: 25px;">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+        <a href="login" style="padding:25px;">Have an account? Log in here</a>
+    </form>
+</body>
+
+</html>

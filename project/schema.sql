@@ -7,15 +7,3 @@ CREATE TABLE user (
     telephoneNo TEXT UNIQUE NOT NULL,
     PRIMARY KEY (userID)
 );
-
-CREATE TABLE dog (
-    dogID TEXT UNIQUE NOT NULL,
-    userID TEXT NOT NULL,
-    name TEXT NOT NULL,
-    age INTEGER NOT NULL,
-    gender TEXT NOT NULL,
-    breed TEXT NOT NULL,
-    lost BIT NOT NULL,
-
-
-)
