@@ -6,27 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>DogGo</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
-    <h1 style="margin: 26px;margin-top: 20px;margin-right: 25px;margin-bottom: 25px;margin-left: 25px;width: 154px;font-weight: bold;">Register</h1>
+<body style="background-color:#eff7f6">
+    <div style="margin: auto;width: 92px;"><img src="resources/DogGo_Logo.png" alt="DogGo Logo"></div>
+    
+    <h1 style="margin: auto;width: auto;font-weight: bold;text-align: center;height: auto;margin-top: 25px;margin-bottom: 25px;">Register</h1>
+    
+    <div style="margin: auto;width: 300px;">
+        <input type="email" style="width: 300px;margin: 0px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Email" name="email"/>
+        <input type="tel" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Telephone number" name="telephoneNo"/>
+        <input type="password" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Password" name="password"/>
+        <input type="password" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Confirm password" name="confirmPassword"/>
+    </div>
+    
+    <div style="margin: auto;width: 71px;">
+        <button class="btn btn-primary" type="button" name="register_button" value="register">Submit</button>
+    </div>
+    
+    <div style="margin: auto;width: 128px;">
+        <a href="login">Have an account? Log in</a>
+    </div>
 
-    <form method="post">
-        <div style="margin: 10px;margin-left: 25px;">
-            <input type="email" style="border-radius: 15px;transform: translate(0px);width: 300px;margin: 0px;border-color: var(--bs-gray-500);" placeholder="Email" name="email"/>
-        </div>
-        <div style="margin: 10px;margin-left: 25px;">
-            <input type="tel" style="width: 300px;border-radius: 15px;color: var(--bs-gray-900);background: var(--bs-white);border-color: var(--bs-gray-500);" placeholder="Telephone number" name=""telephoneNo/>
-        </div>
-        <div style="margin: 10px;margin-left: 25px;">
-            <input type="password" style="border-radius: 15px;width: 300px;border-color: var(--bs-gray-500);" placeholder="Password" name="password"/>
-        </div>
-        <div style="margin: 20px;margin-left: 25px;">
-            <button class="btn btn-primary" type="submit">Register</button>
-        </div>
-        <a href="login" style="padding:25px;">Have an account? Log in here</a>
-    </form>
 </body>
 
 </html>
