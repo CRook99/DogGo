@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user (
     userID TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
     telephoneNo TEXT UNIQUE NOT NULL,
     PRIMARY KEY (userID)
 );

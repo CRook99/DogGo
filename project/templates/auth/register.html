@@ -4,31 +4,52 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>DogGo</title>
+    <title>DogGo - Register</title>
+    <!--
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    -->
+    <style>
+        img {display: block; margin-top: 50px; margin-left: auto; margin-right: auto; width:250px; height: auto;}
+        h1 {font-weight: bold; margin-top:20px; margin-bottom:10px; color:#1F363D; font-family: "DogGo"; font-size: 40px;}
+        input {border-color:#1F363D; width: 300px; border-color:transparent; border-bottom:1px solid; background:transparent; padding:5px; margin:5px; outline:none;}
+        body {background-color:#EFF7F6}
+        div.form {margin: auto; padding: 15px;}
+        div.button {padding: 5px;}
+        div.links {padding: 5px;}
+        button {background-color: #F7D6E0; border: none; border-radius: 8px; padding: 10px; font-size: 20px; color: #EFF7F6; transition-duration: 0.4s;}
+        button:hover {background-color: #F2B5D4; box-shadow: 0px 5px 15px #1F363D40;}
+        @font-face {font-family: "DogGo"; src:url('/static/mvboli.ttf')}
+    </style>
 </head>
 
-<body style="background-color:#eff7f6">
-    <div style="margin: auto;width: 92px;"><img src="resources/DogGo_Logo.png" alt="DogGo Logo"></div>
-    
-    <h1 style="margin: auto;width: auto;font-weight: bold;text-align: center;height: auto;margin-top: 25px;margin-bottom: 25px;">Register</h1>
-    
-    <div style="margin: auto;width: 300px;">
-        <input type="email" style="width: 300px;margin: 0px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Email" name="email"/>
-        <input type="tel" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Telephone number" name="telephoneNo"/>
-        <input type="password" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Password" name="password"/>
-        <input type="password" style="width: 300px;border-color: var(--bs-gray-500);border-color: transparent;border-bottom: 1px solid darkgrey; background: transparent;" placeholder="Confirm password" name="confirmPassword"/>
-    </div>
-    
-    <div style="margin: auto;width: 71px;">
-        <button class="btn btn-primary" type="button" name="register_button" value="register">Submit</button>
-    </div>
-    
-    <div style="margin: auto;width: 128px;">
-        <a href="login">Have an account? Log in</a>
-    </div>
+<body>
+    <center>
+        <div>
+            <img src="{{url_for('static', filename='DogGo_Logo.png')}}" alt="DogGo Logo">
+        </div>
+
+        <h1>Register</h1>
+
+        <div class="form">
+            <input type="email" placeholder="Email" name="email"/>
+            <br>
+            <input type="tel" placeholder="Telephone number" name="telephoneNo"/>
+            <br>
+            <input type="password" placeholder="Password" name="password"/>
+            <br>
+            <input type="password" placeholder="Confirm password" name="confirmPassword"/>
+        </div>
+
+        <div class="button">
+            <button class="btn btn-primary" type="button" name="register_button" value="register">Submit</button>
+        </div>
+
+        <div class="links">
+            <a href="login">Have an account? Log in</a>
+        </div>
+    </center>
 
 </body>
 

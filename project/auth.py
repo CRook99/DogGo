@@ -13,27 +13,28 @@ app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql')
 def login():
     title = "Log In"
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        if request.form.get("login_button") == "login":
-            con = sqlite3.connect('database.db')
+        email = request.form["email"]
+        password = request.form["password"]
+        if request.form["login_button"] == "login":
             print("Opened db successfully")
+            con = sqlite3.connect('database.db')
             user = con.execute("SELECT (email, password) FROM user WHERE email = ?", (email)).fetchone()
 
             if check_password_hash(user['password'], password):
                 print("Successful login")
 
-    return render_template('auth/login.html', title=title)
+    elif request.method == "GET":
+        return render_template('auth/login.html', title=title)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
-        email = request.form.get("email")
-        telephoneNo = request.form.get("telephoneNo")
-        password = request.form.get("password")
-        confirmPassword = request.form.get("confirmPassword")
-        if request.form.get("login_button") == "login":
+        email = request.form["email"]
+        telephoneNo = request.form["telephoneNo"]
+        password = request.form["password"]
+        confirmPassword = request.form["confirmPassword"]
+        if request.form["register_button"] == "register":
             if validateEmail(email):
                 con = sqlite3.connect('database.db')
                 con.execute("INSERT INTO user (email, telephoneNo, password) VALUES (?, ?, ?)", (email, telephoneNo, generate_password_hash(password)))
@@ -61,10 +62,10 @@ def matchPasswords(password, confirmPassword):
 
 
 if __name__ == '__main__':
-    print(validateEmail("test@test.com"))
-    print(validatePassword("Short1"))
-    print(validatePassword("Longlonglonglonglonglonglonglong1"))
-    print(validatePassword("capitalletter1"))
-    print(validatePassword("Nonumber"))
-    print(validatePassword("Validpass1"))
+    # print(validateEmail("test@test.com"))
+    # print(validatePassword("Short1"))
+    # print(validatePassword("Longlonglonglonglonglonglonglong1"))
+    # print(validatePassword("capitalletter1"))
+    # print(validatePassword("Nonumber"))
+    # print(validatePassword("Validpass1"))
     app.run(debug = True)
