@@ -13,12 +13,12 @@
     <style>
         img {display: block; margin-top: 50px; margin-left: auto; margin-right: auto; width:250px; height: auto;}
         h1 {font-weight: bold; margin-top:20px; margin-bottom:10px; color:#1F363D; font-family: "DogGo"; font-size: 40px;}
-        input {border-color:#1F363D; width: 300px; border-color:transparent; border-bottom:1px solid; background:transparent; padding:5px; margin:5px; outline:none;}
-        body {background-color:#EFF7F6}
+        input {border-color:#1F363D; width: 300px; border-color:transparent; border-bottom:1px solid; background:transparent; font-family:"DogGo"; padding:5px; margin:5px; outline:none;}
+        body {background-color:#DAF2EE}
         div.form {margin: auto; padding: 15px;}
         div.button {padding: 5px;}
         div.links {padding: 5px;}
-        button {background-color: #F7D6E0; border: none; border-radius: 8px; padding: 10px; font-size: 20px; color: #EFF7F6; transition-duration: 0.4s;}
+        button {background-color: #7BDFF2; border: none; border-radius: 8px; padding: 10px; font-family:"DogGo"; font-size: 20px; color: #1F363D; transition-duration: 0.4s;}
         button:hover {background-color: #F2B5D4; box-shadow: 0px 5px 15px #1F363D40;}
         @font-face {font-family: "DogGo"; src:url('/static/mvboli.ttf')}
     </style>
@@ -32,20 +32,22 @@
 
         <h1>Log In</h1>
 
-        <form method="post">
+        <form method="post" action="/login">
             <div class="form">
                 <input type="email" placeholder="Email" name="email"/>
                 <br>
                 <input type="password" placeholder="Password" name="password"/>
             </div>
+
+            <div class="button">
+                <button class="btn btn-primary" type="submit" name="login_button" value="login">Submit</button>
+            </div>
         </form>
 
-        <div class="button">
-            <button class="btn btn-primary" type="button" name="login_button" value="login">Submit</button>
-        </div>
+
 
         <div class="links">
-            <a href="register">Need an account? Create one here</a>
+            <a href="register" style="font-family: 'DogGo';">Need an account? Create one here</a>
         </div>
     </center>
     
