@@ -17,14 +17,14 @@ def login():
         password = request.form["password"]
         if request.form["login_button"] == "login":
             print("Opened db successfully")
-            con = sqlite3.connect('database.db')
-            user = con.execute("SELECT (email, password) FROM user WHERE email = ?", (email)).fetchone()
 
-            if check_password_hash(user['password'], password):
-                print("Successful login")
+            #con = sqlite3.connect('database.db')
+            #user = con.execute("SELECT (email, password) FROM user WHERE email = ?", (email)).fetchone()
 
-    elif request.method == "GET":
-        return render_template('auth/login.html', title=title)
+            #if check_password_hash(user['password'], password):
+            #    print("Successful login")
+
+    return render_template('auth/login.html', title=title)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -50,11 +50,17 @@ def index():
 
 
 def validateEmail(email):
-    return not (re.search(r"[^@]+@[^@]+\.[^@]+", email) == None) # Regex expression to check whether submitted email follows conventions
+    return not (re.search(r"[^@]{1,64}@[^@]{1,253}\.[^@]{2,}", email) == None)
+    # Regex expression to check whether submitted email follows conventions
+    # [^@]{1,64} finds a recipient name of maximum 64 characters
+    # @ finds the required @ symbol that separates the name and domain
+    # [^@]{1,253} finds a domain of maximum 253 characters
+    # \. finds the required . symbol that separates the domain and top-level domain
+    # [^@]{2,} finds the top-level domain of minimum 2 characters
 
 
 def validatePassword(password):
-    return not (re.search(r"/(.*[A-Z].*)(.*\d.*)(^.{8,32})/", password) == None) # TODO fix
+    return not (re.search(r"\d[A-Z]{8,32}", password) == None) # TODO fix
 
 
 def matchPasswords(password, confirmPassword):
@@ -62,10 +68,13 @@ def matchPasswords(password, confirmPassword):
 
 
 if __name__ == '__main__':
-    # print(validateEmail("test@test.com"))
-    # print(validatePassword("Short1"))
-    # print(validatePassword("Longlonglonglonglonglonglonglong1"))
-    # print(validatePassword("capitalletter1"))
-    # print(validatePassword("Nonumber"))
-    # print(validatePassword("Validpass1"))
+    print(validateEmail("test@test.com"))
+    print(validateEmail("test@test.co"))
+    print(validateEmail("test@test.c"))
+    print("\n")
+    print(validatePassword("Password1")) # Valid
+    print(validatePassword("Pass1")) # Short
+    print(validatePassword("Passwordpasswordpasswordpassword1")) # Long
+    print(validatePassword("password1")) # No cap
+    print(validatePassword("Passwordpassword")) # No num
     app.run(debug = True)
