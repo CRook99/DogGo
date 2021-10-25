@@ -42,16 +42,26 @@
                 <br>
                 <input type="password" placeholder="Confirm password" name="confirmPassword"/>
             </div>
+            
+            {% block content %}
+                {% with messages = get_flashed_messages(with_categories = true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            {% endblock %}
 
             <div class="button">
                 <button class="btn btn-primary" type="submit" name="register_button" value="register">Submit</button>
             </div>
         </form>
 
-
         <div class="links">
             <a href="login" style="font-family: 'DogGo';">Have an account? Log in</a>
         </div>
+
     </center>
 
 </body>
