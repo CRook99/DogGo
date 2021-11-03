@@ -78,7 +78,11 @@ def register():
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return redirect(url_for('dogList'))
+
+@app.route('/dogs', methods=['GET', 'POST'])
+def dogList():
+    return render_template('dogs/list.html')
 
 
 def validateEmail(email):

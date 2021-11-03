@@ -1,0 +1,94 @@
+div.dogListing {
+    width: 50%;
+    height: 200px;
+}
+
+div.dogImageDiv {
+    float: left;
+    width: 162px;
+    height: 162px;
+}
+
+div.dogFullPane {
+    width: 75%;
+    display: inline-block;
+}
+div.dogHalfPane {
+    text-align: left;
+    display: inline-block;
+    width: 50%;
+}
+
+hr {
+    width: 50%;
+    height: 1px;
+    color: #1F363D;
+    background-color: #1F363D;
+    border-width: 0;
+}
+
+img.dogImage {
+    width: 150px;
+    height: 150px;
+    padding: 5px;
+    border: 1px solid #1F363D;
+    object-fit: cover;
+}
+
+h1 {
+    font-weight: bold; 
+    margin: 30px; 
+    color:#1F363D; 
+    font-family: "DogGo"; 
+    font-size: 40px;
+}
+
+p.dogName {
+    font-size: 30px;
+    font-weight: bold;
+    color: #1F363D;
+    font-family: "DogGo";
+    margin-bottom: 5px;
+}
+
+p.info {
+    color: #1F363D;
+    font-family: "DogGo";
+    margin: 2px;
+}
+
+input {
+    border-color:#1F363D; 
+    width: 300px; 
+    border-color:transparent; 
+    border-bottom:1px solid; 
+    background:transparent; 
+    font-family:"DogGo"; 
+    padding:5px; 
+    margin:5px; 
+    outline:none;
+}
+
+body {
+    background-color:#DAF2EE
+}
+
+button {
+    background-color: #7BDFF2; 
+    border: none; 
+    border-radius: 8px; 
+    padding: 10px; 
+    font-family:"DogGo"; 
+    font-size: 20px; 
+    color: #1F363D; 
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #F2B5D4; 
+    box-shadow: 0px 5px 15px #1F363D40;
+}
+
+@font-face {
+    font-family: "DogGo"; src:url('/static/mvboli.ttf')
+}
