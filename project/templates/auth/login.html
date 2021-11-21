@@ -23,6 +23,16 @@
                 <input type="password" placeholder="Password" name="password"/>
             </div>
 
+            {% block content %}
+                {% with messages = get_flashed_messages(with_categories = true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            {% endblock %}
+
             <div class="button">
                 <button class="btn btn-primary" type="submit" name="login_button" value="login">Submit</button>
             </div>

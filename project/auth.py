@@ -17,12 +17,17 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         if request.form["login_button"] == "login":
-            user = db.execute_query("SELECT email, password FROM user WHERE email = ?", (email,))[0] # .fetchone()?
+            try:
+                user = db.execute_query("SELECT email, password FROM user WHERE email = ?", (email,))[0] # Tries to find a user with given email
+                if check_password_hash(user[1], password):  # 1 = index of password value // Evaluates hashed given password against hashed stored password
+                    print("Successful login")
+                    return render_template('dogs/list.html') # Will redirect to feed
+                else:
+                    flash("Incorrect password")
+            except:
+                flash(f"User with email {email} not found")
 
-            if check_password_hash(user['password'], password):
-                print("Successful login")
-            else:
-                print("Incorrect password")
+
 
     return render_template('auth/login.html', title=title)
 
@@ -31,11 +36,12 @@ def login():
 def register():
     title = "Register"
     if request.method == "POST":
-        error = None
         email = request.form["email"]
         telephoneNo = request.form["telephoneNo"]
         password = request.form["password"]
         confirmPassword = request.form["confirmPassword"]
+
+        error = None
         if request.form["register_button"] == "register":
             empty = False
             if not email:
@@ -63,7 +69,7 @@ def register():
                     error = 'Passwords do not match'
 
                 if error is None:
-                    db.execute_query("INSERT INTO user VALUES (NULL, ?, ?, ?)", (email, telephoneNo, generate_password_hash(password)))
+                    db.execute_query("INSERT INTO user VALUES (NULL, ?, ?, ?)", (email, generate_password_hash(password), telephoneNo))
                     return render_template('auth/login.html')
                 else:
                     flash(error, 'error')
