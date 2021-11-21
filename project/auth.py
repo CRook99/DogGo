@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import os
 import re
+import database as db
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
@@ -16,19 +17,19 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         if request.form["login_button"] == "login":
-            print("Opened db successfully")
+            user = db.execute_query("SELECT email, password FROM user WHERE email = ?", (email,))[0] # .fetchone()?
 
-            #con = sqlite3.connect('database.db')
-            #user = con.execute("SELECT (email, password) FROM user WHERE email = ?", (email)).fetchone()
-
-            #if check_password_hash(user['password'], password):
-            #    print("Successful login")
+            if check_password_hash(user['password'], password):
+                print("Successful login")
+            else:
+                print("Incorrect password")
 
     return render_template('auth/login.html', title=title)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    title = "Register"
     if request.method == "POST":
         error = None
         email = request.form["email"]
@@ -36,7 +37,6 @@ def register():
         password = request.form["password"]
         confirmPassword = request.form["confirmPassword"]
         if request.form["register_button"] == "register":
-
             empty = False
             if not email:
                 flash('Email required', 'empty')
@@ -63,25 +63,21 @@ def register():
                     error = 'Passwords do not match'
 
                 if error is None:
-                    con = sqlite3.connect('database.db')
-                    con.execute("INSERT INTO user (email, telephoneNo, password) VALUES (?, ?, ?)", (email, telephoneNo, generate_password_hash(password)))
-                    con.close()
+                    db.execute_query("INSERT INTO user VALUES (NULL, ?, ?, ?)", (email, telephoneNo, generate_password_hash(password)))
+                    return render_template('auth/login.html')
                 else:
                     flash(error, 'error')
-
-
-
-
 
     return render_template('auth/register.html')
 
 
 @app.route('/')
 def index():
-    return redirect(url_for('dogList'))
+    return redirect(url_for('register'))
 
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
+    title = "My Dogs"
     return render_template('dogs/list.html')
 
 
@@ -103,6 +99,7 @@ def validatePassword(password):
         valid = False
     return valid
 
+
 def validateTel(tel):
     tel = tel.replace(' ','') # Removes whitespace
     return not (re.search(r"^0[0-9]{10}$", tel) is None)
@@ -113,8 +110,4 @@ def matchPasswords(password, confirmPassword):
 
 
 if __name__ == '__main__':
-    print(validateTel("07465 400040"))
-    print(validateTel("07465    400040"))
-    print(validateTel("07465 40004"))
-    print(validateTel("17465 400040"))
     app.run(debug = True)

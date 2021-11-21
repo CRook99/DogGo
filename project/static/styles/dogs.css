@@ -1,22 +1,26 @@
 div.dogListing {
     width: 50%;
     height: 200px;
+    display: flex;
 }
 
 div.dogImageDiv {
-    float: left;
+    order: 1;
+    display: inline-block;
     width: 162px;
     height: 162px;
 }
 
-div.dogFullPane {
-    width: 75%;
+div.dogLeftPane {
+    order: 2;
+    width: 25%;
     display: inline-block;
 }
-div.dogHalfPane {
+div.dogRightPane {
+    order: 3;
     text-align: left;
     display: inline-block;
-    width: 50%;
+    width: 25%;
 }
 
 hr {
