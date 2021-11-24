@@ -79,7 +79,7 @@ def register():
 
 @app.route('/')
 def index():
-    return redirect(url_for('register'))
+    return redirect(url_for('dogList'))
 
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
