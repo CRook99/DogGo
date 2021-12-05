@@ -4,6 +4,7 @@ import sqlite3
 import os
 import re
 import database as db
+from dog_class import Dog
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
@@ -84,7 +85,17 @@ def index():
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
     title = "My Dogs"
-    return render_template('dogs/list.html')
+    dogs = []
+    #dog = Dog('Foog', 10, 'M', 'Borzoi', False, '01/01/11', 'Surrey')
+    #dogs.append(dog)
+    #dog = Dog('Fooge', 11, 'M', 'Bonzai!', True, '02/02/22', 'Sussey')
+    #dogs.append(dog)
+    return render_template('dogs/list.html', dogs=dogs)
+
+@app.route('/edit', methods=['GET', 'POST'])
+def editDog():
+    title = "Editing"
+    return render_template('dogs/edit.html')
 
 
 def validateEmail(email):

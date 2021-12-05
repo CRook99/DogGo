@@ -15,6 +15,58 @@
         
         <hr>
         
+        {% block content %}
+            {% if dogs|length == 0 %}
+                <p>No dogs</p>
+            {% else %}
+                {% for dog in dogs %}
+                    <div class="dogListing">
+                        <div class="dogImageDiv">
+                            <img class="dogImage" src="{{url_for('static', filename='Foog.jpg')}}" alt="A picture of your dog">
+                        </div>
+                        
+                        {% if dog.lost == True %}
+                            {% set lost = 'Yes' %}
+                        {% else %}
+                            {% set lost = 'No' %}
+                        {% endif %}
+
+                        <div class="dogLeftPane">
+                            <p class="dogName">{{ dog.name }}</p>
+                            <p class="info">Last Report: {{ dog.last_report }}</p>
+                            <p class="info">Lost: {{ lost }}</p>
+                            <p class="info">Location: {{ dog.location }}</p>
+
+                        </div>
+
+                        <div class="dogRightPane">
+                            <p class="info">Age: {{ dog.age }}</p>
+                            <p class="info">Gender: {{ dog.gender }}</p>
+                            <p class="info">Breed: {{ dog.breed }}</p>
+                        </div>
+
+                        <div class="editButton">
+                            <a href="edit.html">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+
+                    </div>
+        
+                    <hr>
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <!--
         <div class="dogListing">
             <div class="dogImageDiv">
                 <img class="dogImage" src="{{url_for('static', filename='Scout.jpg')}}" alt="A picture of your dog">
@@ -22,6 +74,7 @@
             
             <div class="dogLeftPane">
                 <p class="dogName">Scout</p>
+                <p class="info">Last Report: 01/01/21</p>
                 <p class="info">Lost: No</p>
                 <p class="info">Location: East Sussex</p>
                 
@@ -40,8 +93,7 @@
             </div>
         
         </div>
-        
-        <hr>
+        -->
         
         <div class="plusButton">
             <a href="edit.html">

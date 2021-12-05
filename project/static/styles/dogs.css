@@ -1,5 +1,5 @@
 div.dogListing {
-    width: 50%;
+    width: 75%;
     height: 200px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -70,7 +70,7 @@ a:hover {
 }
 
 hr {
-    width: 50%;
+    width: 75%;
     height: 1px;
     color: #1F363D;
     background-color: #1F363D;
@@ -110,8 +110,18 @@ p.info {
     color: #1F363D;
     font-family: "DogGo";
     /*font-size: 30px;*/
-    font-size: 1.2vw;
+    font-size: 1.8vw;
     margin: 2px;
+}
+
+@media screen and (max-width: 1000px) {
+    .dogRightPane {
+        display: none !important;
+    }
+    
+    p.info {
+        font-size: 2.5vw;
+    }
 }
 
 input {
