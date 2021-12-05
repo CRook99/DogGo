@@ -5,8 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>DogGo - Editing</title>
-    <link rel="stylesheet" href="/static/styles/dogs.css">
+    <link rel="stylesheet" href="/static/styles/edit.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
+    
+    <script>
+        window.onload = function(){
+            document.getElementById("name_input").value = "Scout"
+            document.getElementById("age_input").value = "7"
+            document.getElementById("gender_input").value = "M"
+            document.getElementById("breed_input").value = "Labrador"
+        }
+    </script>
 </head>
 
 <body>
@@ -18,8 +27,33 @@
             <img class="dogImage" src="{{url_for('static', filename='Scout.jpg')}}" alt="A picture of your dog">
         </div>
         
+        <br>
         
+        <input type="file" class="img_upload" accept=".png, .jpg">
         
+        <div class="infoDiv">
+            <p class="info"><b>Name:</b>
+                <input class="text_box" id="name_input">
+            </p>
+        </div>
+        
+        <div class="infoDiv">
+            <p class="info"><b>Age:</b>
+                <input class="text_box" id="age_input">
+            </p>
+        </div>
+        
+        <div class="infoDiv">
+            <p class="info"><b>Gender:</b>
+                <input class="text_box" id="gender_input">
+            </p>
+        </div>
+        
+        <div class="infoDiv">
+            <p class="info"><b>Breed:</b>
+                <input class="text_box" id="breed_input">
+            </p>
+        </div>
         
         
     </center>

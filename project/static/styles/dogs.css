@@ -60,6 +60,11 @@ div.plusButton {
     font-size: 4em;
 }
 
+div.infoDiv {
+    border-bottom: 1px solid #1F363D;
+    width: 40vw;
+}
+
 a{
     color: #1F363D;
     transition-duration: 0.4s;
@@ -110,7 +115,7 @@ p.info {
     color: #1F363D;
     font-family: "DogGo";
     /*font-size: 30px;*/
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     margin: 2px;
 }
 
@@ -134,6 +139,17 @@ input {
     padding:5px; 
     margin:5px; 
     outline:none;
+}
+
+input.img_upload {
+    border: none;
+    padding: 20px;
+    width: 200px;
+}
+
+.imageUploadDiv {
+    width: 13vw;
+    overflow: hidden;
 }
 
 body {

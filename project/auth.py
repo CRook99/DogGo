@@ -80,14 +80,14 @@ def register():
 
 @app.route('/')
 def index():
-    return redirect(url_for('dogList'))
+    return redirect(url_for('editDog'))
 
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
     title = "My Dogs"
     dogs = []
-    #dog = Dog('Foog', 10, 'M', 'Borzoi', False, '01/01/11', 'Surrey')
-    #dogs.append(dog)
+    dog = Dog('Foog', 10, 'M', 'Borzoi', False, '01/01/11', 'Surrey')
+    dogs.append(dog)
     #dog = Dog('Fooge', 11, 'M', 'Bonzai!', True, '02/02/22', 'Sussey')
     #dogs.append(dog)
     return render_template('dogs/list.html', dogs=dogs)
