@@ -22,7 +22,7 @@
                 {% for dog in dogs %}
                     <div class="dogListing">
                         <div class="dogImageDiv">
-                            <img class="dogImage" src="{{url_for('static', filename='Foog.jpg')}}" alt="A picture of your dog">
+                            <img class="dogImage" src="{{url_for('static', filename='Scout.jpg')}}" alt="A picture of your dog">
                         </div>
                         
                         {% if dog.lost == True %}
@@ -41,8 +41,14 @@
 
                         <div class="dogRightPane">
                             <p class="info">Age: {{ dog.age }}</p>
-                            <p class="info">Gender: {{ dog.gender }}</p>
+                            <p class="info">Sex: {{ dog.sex }}</p>
                             <p class="info">Breed: {{ dog.breed }}</p>
+                        </div>
+                        
+                        <div class="reportButton">
+                            <a href="edit.html">
+                                <i class="fas fa-bullhorn"></i>
+                            </a>
                         </div>
 
                         <div class="editButton">
@@ -57,43 +63,6 @@
                 {% endfor %}
             {% endif %}
         {% endblock %}
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <!--
-        <div class="dogListing">
-            <div class="dogImageDiv">
-                <img class="dogImage" src="{{url_for('static', filename='Scout.jpg')}}" alt="A picture of your dog">
-            </div>
-            
-            <div class="dogLeftPane">
-                <p class="dogName">Scout</p>
-                <p class="info">Last Report: 01/01/21</p>
-                <p class="info">Lost: No</p>
-                <p class="info">Location: East Sussex</p>
-                
-            </div>
-            
-            <div class="dogRightPane">
-                <p class="info">Age: 7</p>
-                <p class="info">Gender: M</p>
-                <p class="info">Breed: Chocolate Labrador</p>
-            </div>
-            
-            <div class="editButton">
-                <a href="edit.html">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
-        
-        </div>
-        -->
         
         <div class="plusButton">
             <a href="edit.html">

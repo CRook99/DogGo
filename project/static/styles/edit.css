@@ -10,12 +10,13 @@ div.dogImageDiv {
 
 div.infoDiv {
     border-bottom: 1px solid #1F363D;
-    width: 40vw;
+    width: 1000px;
+    height: 100px;
 }
 
 input.img_upload {
     border: none;
-    padding: 20px;
+    margin: 20px;
     width: 200px;
 }
 
@@ -45,26 +46,69 @@ h1 {
 p.info {
     color: #1F363D;
     font-family: "DogGo";
-    font-size: 1.4vw;
+    font-size: 38px;
     margin: 0;
     padding: 8px;
 }
 
 input.text_box {
-    width: 300px; 
-    border-color:#CFD3D3;
+    width: 400px; 
     border: 1px solid;
     background-color: #E8F3F1;
     font-family:"DogGo";
-    font-size: 1.4vw;
+    font-size: 38px;
     color: #1F363D;
     padding:5px; 
     margin:5px; 
     outline:none;
 }
 
+select {
+    margin: 10px;
+    font-family: "DogGo";
+    color: #1F363D;
+    font-size: 38px;
+    border-color:#1F363D;
+    background-color: #E8F3F1;
+}
+
+select.select_box_short {
+    width: 100px;
+}
+
+select.select_box_long {
+    width: 400px;
+}
+
+select:focus {
+    border-color: #F2B5D4;
+}
+
+@media screen and (max-width: 1200px){
+    div.infoDiv {
+        width: 80vw;
+    }
+}
+
 input:focus {
     border-color: #F2B5D4;
+}
+
+button {
+    background-color: #7BDFF2; 
+    border: none; 
+    border-radius: 8px; 
+    padding: 10px;
+    margin: 20px;
+    font-family:"DogGo"; 
+    font-size: 30px; 
+    color: #1F363D; 
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #F2B5D4; 
+    box-shadow: 0px 5px 15px #1F363D40;
 }
 
 body {

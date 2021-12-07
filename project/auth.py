@@ -86,7 +86,7 @@ def index():
 def dogList():
     title = "My Dogs"
     dogs = []
-    dog = Dog('Foog', 10, 'M', 'Borzoi', False, '01/01/11', 'Surrey')
+    dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
     dogs.append(dog)
     #dog = Dog('Fooge', 11, 'M', 'Bonzai!', True, '02/02/22', 'Sussey')
     #dogs.append(dog)
