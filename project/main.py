@@ -3,8 +3,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import os
 import re
-import database as db
-from dog_class import Dog
+import project.database as db
+from project.dog_class import Dog
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
@@ -22,7 +22,7 @@ def login():
                 user = db.execute_query("SELECT email, password FROM user WHERE email = ?", (email,))[0] # Tries to find a user with given email
                 if check_password_hash(user[1], password):  # 1 = index of password value // Evaluates hashed given password against hashed stored password
                     print("Successful login")
-                    return render_template('dogs/list.html') # Will redirect to feed
+                    #return render_template('dogs/list.html') # Will redirect to feed
                 else:
                     flash("Incorrect password")
             except:
@@ -59,7 +59,6 @@ def register():
                 empty = True
 
             if not empty:
-                print("Boxes filled")
                 if not validateEmail(email):
                     error = 'Invalid email'
                 elif not validateTel(telephoneNo):
@@ -88,14 +87,42 @@ def dogList():
     dogs = []
     dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
     dogs.append(dog)
-    #dog = Dog('Fooge', 11, 'M', 'Bonzai!', True, '02/02/22', 'Sussey')
-    #dogs.append(dog)
     return render_template('dogs/list.html', dogs=dogs)
 
 @app.route('/edit', methods=['GET', 'POST'])
 def editDog():
     title = "Editing"
-    return render_template('dogs/edit.html')
+    dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
+
+    if request.method == "POST":
+        name = request.form['name_input']
+        age = request.form['age_input']
+        sex = request.form['sex_input']
+        breed = request.form['breed_input']
+        location = request.form['location_input']
+
+        print(name)
+        print(location)
+        print(len(name))
+
+        error = None
+        if request.form['submit_button'] == 'submit':
+            if not validateDogName(name):
+                error = 'Invalid name - must be between 1 and 20 characters'
+                flash(error)
+            if not validateBreedName(breed):
+                error = 'Invalid breed - must be between 1 and 50 characters'
+                flash(error)
+
+            if error is None:
+                db.execute_query('INSERT INTO dog VALUES (NULL, 1, ?, ?, ?, ?, 0, 2021-01-01, ?)', (name, age, sex, breed, location))
+                return render_template('edit.html')
+            else:
+                flash(error, 'error')
+
+            pass
+
+    return render_template('dogs/edit.html', dog=dog)
 
 
 def validateEmail(email):
@@ -125,6 +152,11 @@ def validateTel(tel):
 def matchPasswords(password, confirmPassword):
     return password == confirmPassword # Returns whether the first password and the confirmation password match
 
+def validateDogName(name):
+    return 1 <= len(name) <= 20
+
+def validateBreedName(breed):
+    return 1 <= len(breed) <= 50
 
 if __name__ == '__main__':
     app.run(debug = True)
