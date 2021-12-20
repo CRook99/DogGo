@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, g, flash
+from flask import Flask, render_template, request, url_for, redirect, g, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import os
@@ -13,16 +13,16 @@ app.secret_key = 'dev'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    title = "Log In"
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
         if request.form["login_button"] == "login":
             try:
-                user = db.execute_query("SELECT email, password FROM user WHERE email = ?", (email,))[0] # Tries to find a user with given email
-                if check_password_hash(user[1], password):  # 1 = index of password value // Evaluates hashed given password against hashed stored password
-                    print("Successful login")
-                    #return render_template('dogs/list.html') # Will redirect to feed
+                user = db.execute_query("SELECT userID, email, password FROM user WHERE email = ?", (email,))[0] # Tries to find a user with given email
+                if check_password_hash(user[2], password):  # 1 = index of password value // Evaluates hashed given password against hashed stored password
+                    session.clear()
+                    session['userID'] = user[0] # user[0] = The accounts userID
+                    return redirect(url_for('dogList')) # Will redirect to feed
                 else:
                     flash("Incorrect password")
             except:
@@ -30,12 +30,11 @@ def login():
 
 
 
-    return render_template('auth/login.html', title=title)
+    return render_template('auth/login.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    title = "Register"
     if request.method == "POST":
         email = request.form["email"]
         telephoneNo = request.form["telephoneNo"]
@@ -79,20 +78,29 @@ def register():
 
 @app.route('/')
 def index():
-    return redirect(url_for('editDog'))
+    return redirect(url_for('login'))
 
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
     title = "My Dogs"
-    dogs = []
-    dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
-    dogs.append(dog)
+
+    if 'userID' in session:
+        dogs = []
+        ID = session['userID']
+        query = 'SELECT name, age, sex, breed, lost, last_report, location FROM dog WHERE dog.userID=?'
+        dogs_query = db.execute_query('SELECT * FROM dog WHERE dog.userID=?', (session['userID'],))
+        for data in dogs_query:
+            dogs.append(Dog(*data)) # *data unpacks the tuple and passes values as positional arguments
+    else:
+        print("No user")
+
     return render_template('dogs/list.html', dogs=dogs)
 
 @app.route('/edit', methods=['GET', 'POST'])
 def editDog():
     title = "Editing"
-    dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
+    #dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
+    dog = None
 
     if request.method == "POST":
         name = request.form['name_input']
@@ -100,10 +108,6 @@ def editDog():
         sex = request.form['sex_input']
         breed = request.form['breed_input']
         location = request.form['location_input']
-
-        print(name)
-        print(location)
-        print(len(name))
 
         error = None
         if request.form['submit_button'] == 'submit':
@@ -116,7 +120,7 @@ def editDog():
 
             if error is None:
                 db.execute_query('INSERT INTO dog VALUES (NULL, 1, ?, ?, ?, ?, 0, 2021-01-01, ?)', (name, age, sex, breed, location))
-                return render_template('edit.html')
+                return render_template('dogs/edit.html')
             else:
                 flash(error, 'error')
 

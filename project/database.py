@@ -2,7 +2,7 @@ import sqlite3
 
 from flask import current_app, g
 
-def execute_query(query, params):
+def execute_query(query, params = None):
     con = sqlite3.connect('database.db')
     cur = con.cursor()
     cur.execute(query, params)

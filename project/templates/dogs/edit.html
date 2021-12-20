@@ -10,15 +10,16 @@
     
     <script>
         
-        /*
+        var dog = '{{ dog }}';
+        
         function load_values(dog){
-            document.getElementById("name_input").value = "Scout"
-            document.getElementById("age_input").value = "1"
-            document.getElementById("sex_input").value = "m"
-            document.getElementById("breed_input").value = "Labrador"
-            document.getElementById("location_input").value = "East Sussex"
+            document.getElementById("name_input").value = dog.name;
+            document.getElementById("age_input").value = dog.age;
+            document.getElementById("sex_input").value = dog.sex;
+            document.getElementById("breed_input").value = dog.breed;
+            document.getElementById("location_input").value = dog.location;
         }
-        */
+        
         
         window.onload = function(){
             document.getElementById("name_input").value = "Scout"
@@ -32,7 +33,7 @@
     </script>
 </head>
 
-<body>
+<body onload="load_values(dog)">
     <center>
         
         <h1>Scout</h1>
