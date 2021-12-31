@@ -4,38 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>DogGo - Editing</title>
+    <title>DogGo - Creating</title>
     <link rel="stylesheet" href="/static/styles/edit.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
-    
-    <script>
-        /*
-        function load_values(dog){
-            document.getElementById("name_input").value = dog.name;
-            document.getElementById("age_input").value = dog.age;
-            document.getElementById("sex_input").value = dog.sex;
-            document.getElementById("breed_input").value = dog.breed;
-            document.getElementById("location_input").value = dog.location;
-        }
-        */
-        
-        window.onload = function(){
-            document.getElementById("name_input").value = '{{ name }}';
-            document.getElementById("age_input").value = {{ age }};
-            document.getElementById("sex_input").value = '{{ sex }}';
-            document.getElementById("breed_input").value = '{{ breed }}';
-            document.getElementById("location_input").value = '{{ location }}';
-            document.getElementById("id_hidden").value = '{{ id }}';
-        }
-        
-        
-    </script>
 </head>
 
 <body>
     <center>
         
-        <h1>Scout</h1>
+        <h1>New Dog</h1>
         
         <div class="dogImageDiv">
             <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
@@ -45,7 +22,7 @@
         
         <input type="file" class="img_upload" accept=".png, .jpg">
         
-        <form method="post" action="/edit">
+        <form method="post" action="/create">
             <div class="infoDiv">
                 <p class="info"><b>Name:</b>
                     <input class="text_box" id="name_input" name="name_input">
@@ -54,7 +31,7 @@
 
             <div class="infoDiv">
                 <p class="info"><b>Age:</b>
-                    <input type="number" class="number" id="age_input" name="age_input" min="1" max="20">
+                    <input type="number" class="number" id="age_input" name="age_input" min="1" max="20" value="1">
                 </p>
             </div>
 

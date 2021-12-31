@@ -99,12 +99,54 @@ def dogList():
 @app.route('/edit', methods=['GET', 'POST'])
 def editDog():
     title = "Editing"
-    #dog = Dog('Scout', 7, 'M', 'Chocolate Labrador', False, '01/01/11', 'East Sussex')
-    dog = None
+
+    if request.method == "GET":
+        id = request.args.get('id')
+        #dog = Dog(*db.execute_query('SELECT * FROM dog WHERE dogID=?', (id,))[0]) # [0] necessary as query returns an array
+        print(f"ID = {id}")
+        dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0]
+        (name, age, sex, breed, location) = dog
 
     if request.method == "POST":
         name = request.form['name_input']
         age = request.form['age_input']
+        sex = request.form['sex_input']
+        breed = request.form['breed_input']
+        location = request.form['location_input']
+        id = request.form['id_hidden']
+
+        error = None
+        if request.form['submit_button'] == 'submit':
+            if not validateDogName(name):
+                error = 'Invalid name - must be between 1 and 20 characters'
+                flash(error)
+            if not validateBreedName(breed):
+                error = 'Invalid breed - must be between 1 and 50 characters'
+                flash(error)
+
+            if error is None:
+                db.execute_query('UPDATE dog SET name=?, age=?, sex=?, breed=?, location=? WHERE dogID=?', (name, age, sex, breed, location, id))
+                return redirect(url_for('dogList'))
+            else:
+                pass
+
+    return render_template('dogs/edit.html', id=id, name=name, age=age, sex=sex, breed=breed, location=location)
+
+@app.route('/create', methods=['GET', 'POST'])
+def createDog():
+    title = "Creating"
+
+    # if request.method == "GET":
+    #     id = request.args.get('id')
+    #     #dog = Dog(*db.execute_query('SELECT * FROM dog WHERE dogID=?', (id,))[0]) # [0] necessary as query returns an array
+    #     print(f"ID = {id}")
+    #     dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0]
+    #     (name, age, sex, breed, location) = dog
+
+    if request.method == "POST":
+        name = request.form['name_input']
+        age = request.form['age_input']
+        print(age)
         sex = request.form['sex_input']
         breed = request.form['breed_input']
         location = request.form['location_input']
@@ -117,16 +159,18 @@ def editDog():
             if not validateBreedName(breed):
                 error = 'Invalid breed - must be between 1 and 50 characters'
                 flash(error)
+            if not validateAge(age):
+                error = 'Invalid age - please enter a number'
+                flash(error)
 
             if error is None:
-                db.execute_query('INSERT INTO dog VALUES (NULL, 1, ?, ?, ?, ?, 0, 2021-01-01, ?)', (name, age, sex, breed, location))
-                return render_template('dogs/edit.html')
+                print("Inserting")
+                db.execute_query('INSERT INTO dog VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)', (session['userID'], name, age, sex, breed, 0, 'No report', location))
+                return redirect(url_for('dogList'))
             else:
-                flash(error, 'error')
+                pass
 
-            pass
-
-    return render_template('dogs/edit.html', dog=dog)
+    return render_template('dogs/create.html')
 
 
 def validateEmail(email):
@@ -161,6 +205,9 @@ def validateDogName(name):
 
 def validateBreedName(breed):
     return 1 <= len(breed) <= 50
+
+def validateAge(age):
+    return age != None
 
 if __name__ == '__main__':
     app.run(debug = True)

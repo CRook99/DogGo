@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>DogGo - Log In</title>
-    <link rel="stylesheet" href="/static/styles/dogs.css">
+    <link rel="stylesheet" href="/static/styles/list.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
 </head>
 
@@ -22,7 +22,7 @@
                 {% for dog in dogs %}
                     <div class="dogListing">
                         <div class="dogImageDiv">
-                            <img class="dogImage" src="{{url_for('static', filename='Scout.jpg')}}" alt="A picture of your dog">
+                            <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
                         </div>
                         
                         {% if dog.lost == True %}
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="editButton">
-                            <a href="/edit?dog_id=dog.dog_id">
+                            <a href="/edit?id={{ dog.dog_id }}">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>
@@ -65,7 +65,7 @@
         {% endblock %}
         
         <div class="plusButton">
-            <a href="edit.html">
+            <a href="create">
                 <i class="fas fa-plus-circle"></i>
             </a>
         </div>

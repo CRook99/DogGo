@@ -14,11 +14,7 @@ div.infoDiv {
     height: 100px;
 }
 
-input.img_upload {
-    border: none;
-    margin: 20px;
-    width: 200px;
-}
+
 
 .imageUploadDiv {
     width: 13vw;
@@ -51,8 +47,7 @@ p.info {
     padding: 8px;
 }
 
-input.text_box {
-    width: 400px; 
+input {
     border: 1px solid;
     background-color: #E8F3F1;
     font-family:"DogGo";
@@ -61,6 +56,26 @@ input.text_box {
     padding:5px; 
     margin:5px; 
     outline:none;
+}
+
+.text_box {
+    width: 400px; 
+}
+
+.number {
+    width: 80px; 
+}
+
+input.img_upload {
+    border: none;
+    background-color: #DAF2EE;
+    color: #1F363D;
+    margin: 20px;
+    margin-left: 70px;
+    width: 250px;
+    font-size: 16px;
+    padding: 0;
+    
 }
 
 select {
