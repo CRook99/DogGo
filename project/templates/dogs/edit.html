@@ -48,7 +48,7 @@
         <form method="post" action="/edit">
             <div class="infoDiv">
                 <p class="info"><b>Name:</b>
-                    <input class="text_box" id="name_input" name="name_input">
+                    <input class="text_box" id="name_input" name="name_input" minlength="1" maxlength="20">
                 </p>
             </div>
 
@@ -69,7 +69,7 @@
 
             <div class="infoDiv">
                 <p class="info"><b>Breed:</b>
-                    <input class="text_box" id="breed_input" name="breed_input">
+                    <input class="text_box" id="breed_input" name="breed_input" minlength="1" maxlength="50">
                 </p>
             </div>
 
@@ -201,8 +201,12 @@
                 {% endwith %}
             {% endblock %}
             
-            <div class="button">
-                <button class="btn btn-primary" type="submit" name="submit_button" value="submit">Submit</button>
+            <div>
+                <button class="submit_button" type="submit" name="button" value="submit">Submit</button>
+            </div>
+            
+            <div>
+                <button class="delete_button" name="button" value="delete">Delete</button>
             </div>
         </form>
         

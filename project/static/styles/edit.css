@@ -110,7 +110,6 @@ input:focus {
 }
 
 button {
-    background-color: #7BDFF2; 
     border: none; 
     border-radius: 8px; 
     padding: 10px;
@@ -121,9 +120,22 @@ button {
     transition-duration: 0.4s;
 }
 
-button:hover {
+.submit_button {
+    background-color: #7BDFF2;
+}
+
+.delete_button {
+    background-color: #D96F6F;
+}
+
+.submit_button:hover {
     background-color: #F2B5D4; 
     box-shadow: 0px 5px 15px #1F363D40;
+}
+
+.delete_button:hover {
+    background-color: #F2B5D4; 
+    box-shadow: 0px 5px 15px #540E0E40;
 }
 
 body {

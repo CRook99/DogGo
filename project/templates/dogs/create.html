@@ -25,7 +25,7 @@
         <form method="post" action="/create">
             <div class="infoDiv">
                 <p class="info"><b>Name:</b>
-                    <input class="text_box" id="name_input" name="name_input">
+                    <input class="text_box" id="name_input" name="name_input" minlength="1" maxlength="20">
                 </p>
             </div>
 
@@ -46,7 +46,7 @@
 
             <div class="infoDiv">
                 <p class="info"><b>Breed:</b>
-                    <input class="text_box" id="breed_input" name="breed_input">
+                    <input class="text_box" id="breed_input" name="breed_input" minlength="1" maxlength="50">
                 </p>
             </div>
 
@@ -165,8 +165,6 @@
                     </select>
                 </p>
             </div>
-            
-            <input type="hidden" id="id_hidden" name="id_hidden">
 
             {% block content %}
                 {% with messages = get_flashed_messages() %}
@@ -179,7 +177,7 @@
             {% endblock %}
             
             <div class="button">
-                <button class="btn btn-primary" type="submit" name="submit_button" value="submit">Submit</button>
+                <button class="submit_button" type="submit" name="submit_button" value="submit">Submit</button>
             </div>
         </form>
         
