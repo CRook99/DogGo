@@ -1,0 +1,30 @@
+div.navBar {
+    position: fixed;
+    bottom: 0px;
+    left: 25%;
+    right: 25%;
+    
+    width: 50%;
+}
+
+nav {
+    background-color: #0000;
+    font: 4vw "DogGo";
+    border-top: 2px solid #1F363D;
+}
+
+a.navlink {
+    margin: 0 5%;
+}
+
+i {
+    color: #1F363D;
+}
+
+body {
+    background-color:#DAF2EE
+}
+
+@font-face {
+    font-family: "DogGo"; src:url('/static/mvboli.ttf');
+}

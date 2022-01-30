@@ -4,9 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>DogGo - Log In</title>
+    <title>DogGo - My Dogs</title>
     <link rel="stylesheet" href="/static/styles/list.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
+    <script>
+        function report(name) {
+            console.log(name);
+            confirm(`Are you sure you want to report %{} as missing?`);
+        }
+    </script>
 </head>
 
 <body>
@@ -46,7 +52,7 @@
                         </div>
                         
                         <div class="reportButton">
-                            <a href="edit.html">
+                            <a onclick="report(dog.name);" href="#">
                                 <i class="fas fa-bullhorn"></i>
                             </a>
                         </div>

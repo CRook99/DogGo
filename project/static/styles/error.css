@@ -1,0 +1,20 @@
+h1 {
+    font-family: "DogGo";
+    color: #1F363D;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+p {
+    font-family: "DogGo";
+    color: #1F363D;
+    font-size: 25px;
+}
+
+body {
+    background-color: #DAF2EE;
+}
+
+@font-face {
+    font-family: "DogGo"; src:url('/static/mvboli.ttf');
+}

@@ -1,11 +1,9 @@
 from flask import Flask, render_template, request, url_for, redirect, g, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
-import sqlite3
 import os
-import re
 import project.database as db
 import project.validation as vd
-from project.dog_class import Dog
+from project.classes import Dog
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
@@ -14,7 +12,15 @@ app.secret_key = 'dev'
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return redirect(url_for('dogList'))
+
+
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    if request.method == "GET":
+        reports = None
+        # get latest X reports
+    return render_template('feed/home.html', reports=reports)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -92,7 +98,7 @@ def dogList():
         for data in dogs_query:
             dogs.append(Dog(*data)) # *data unpacks the tuple and passes values as positional arguments
     else:
-        print("No user")
+        return render_template('error_401.html')
 
     return render_template('dogs/list.html', dogs=dogs)
 
