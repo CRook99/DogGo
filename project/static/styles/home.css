@@ -1,10 +1,45 @@
+div.container {
+    width: 65%;
+}
+
+div.feed {
+    overflow: auto;
+    height: 75vh;
+}
+
+div.report {
+    border-bottom: 1px solid #1F363D;
+    height: 25vh;
+    display: flex;
+}
+
+div.dogImageDiv {
+    display: inline-block;
+    order: 1;
+    flex: none;
+    position: relative;
+
+    height: 310px;
+    width: 310px;
+    margin: 5px;
+}
+
+div.infoDiv {
+    display: inline-block;
+    order: 2;
+    flex: none;
+
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+}
+
 div.navBar {
     position: fixed;
     bottom: 0px;
-    left: 25%;
-    right: 25%;
-    
-    width: 50%;
+    width: 65%;
 }
 
 nav {
@@ -17,8 +52,50 @@ a.navlink {
     margin: 0 5%;
 }
 
+p.name {
+    font: bold 3vw "DogGo";
+    color: #1F363D;
+    margin: 10px 0;
+}
+
+p.info {
+    font: 2vw "DogGo";
+    color: #1F363D;
+    margin: 0;
+}
+
+img {
+    object-fit: cover;
+
+    margin: 5px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #1F363D;
+    
+}
+
 i {
     color: #1F363D;
+    transition-duration: 0.4s;
+}
+
+i:hover {
+    color: #F2B5D4;
+}
+
+h1 {
+    font-weight: bold; 
+    margin: 30px; 
+    color:#1F363D; 
+    font-family: "DogGo"; 
+    font-size: 60px;
+}
+
+hr {
+    background-color: #1F363D;
+    height: 1.5px;
+    border-width: 0;
+    margin: 0;
 }
 
 body {

@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="/static/styles/list.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
     <script>
-        function report(name) {
-            console.log(name);
+        function report(index) {
             confirm(`Are you sure you want to report %{} as missing?`);
         }
     </script>
@@ -25,6 +24,7 @@
             {% if dogs|length == 0 %}
                 <p>No dogs</p>
             {% else %}
+                var index = 0;
                 {% for dog in dogs %}
                     <div class="dogListing">
                         <div class="dogImageDiv">
@@ -52,7 +52,7 @@
                         </div>
                         
                         <div class="reportButton">
-                            <a onclick="report(dog.name);" href="#">
+                            <a onclick="report(index);" href="#">
                                 <i class="fas fa-bullhorn"></i>
                             </a>
                         </div>
@@ -66,6 +66,8 @@
                     </div>
         
                     <hr>
+
+                    index = index + 1;
                 {% endfor %}
             {% endif %}
         {% endblock %}

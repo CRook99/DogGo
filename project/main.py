@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import os
 import project.database as db
 import project.validation as vd
-from project.classes import Dog
+from project.classes import Dog, Report
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
@@ -12,14 +12,22 @@ app.secret_key = 'dev'
 
 @app.route('/')
 def index():
-    return redirect(url_for('dogList'))
+    return redirect(url_for('login'))
 
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    if request.method == "GET":
-        reports = None
-        # get latest X reports
+    if 'userID' in session:
+
+        if request.method == "GET":
+            reports = []
+            for i in range(0, 10):
+                reports.append(Report(1, 1, 1))
+            # get latest X reports
+
+    else:
+        return render_template('error_401.html')
+
     return render_template('feed/home.html', reports=reports)
 
 
@@ -92,15 +100,17 @@ def dogList():
 
     if 'userID' in session:
         dogs = []
+        names = []
         ID = session['userID']
         query = 'SELECT name, age, sex, breed, lost, last_report, location FROM dog WHERE dog.userID=?'
         dogs_query = db.execute_query('SELECT * FROM dog WHERE dog.userID=?', (session['userID'],))
         for data in dogs_query:
             dogs.append(Dog(*data)) # *data unpacks the tuple and passes values as positional arguments
+            names.append(data[2])
     else:
         return render_template('error_401.html')
 
-    return render_template('dogs/list.html', dogs=dogs)
+    return render_template('dogs/list.html', dogs=dogs, names=names)
 
 
 @app.route('/edit', methods=['GET', 'POST'])

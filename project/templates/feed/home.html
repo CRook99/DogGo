@@ -11,29 +11,48 @@
 
 <body>
     <center>
+        <div class="container">
         
-        <div class="feed">
-            {% block content %}
-                {% for report in reports %}
-            
-                    <div class="report">
-                        <p>Line 1</p>
-                        <p>Line 2</p>
-                    </div>
-            
-                    <hr>
-            
-                {% endfor %}
-            {% endblock %}
+            <h1>Feed</h1>
+            <hr>
+
+            <div class="feed">
+                {% block content %}
+                    {% for report in reports %}
+
+                        <div class="report">
+                            <div class="dogImageDiv">
+                                <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of the reported dog">
+
+                            </div>
+
+                            <div class="infoDiv">
+                                <p class="name">Name</p>
+                                <p class="info">Lost on: Date</p>
+                                <p class="info">Lost in: Location</p>
+
+                            </div>
+                            
+                            
+
+                        </div>
+
+                    {% endfor %}
+                {% endblock %}
+            </div>
+
+            <div class="navBar">
+                <nav>
+                    <a href="home" class="navlink"><i class="fas fa-search"></i></a>
+                    <a href="list" class="navlink"><i class="fas fa-paw"></i></a>
+                    <a href="profile" class="navlink"><i class="fas fa-user"></i></a>
+                </nav>
+            </div>
+
+
         </div>
         
-        <div class="navBar">
-            <nav>
-                <a href="home" class="navlink"><i class="fas fa-search"></i></a>
-                <a href="list" class="navlink"><i class="fas fa-paw"></i></a>
-                <a href="profile" class="navlink"><i class="fas fa-user"></i></a>
-            </nav>
-        </div>
+        
         
         
     </center>
