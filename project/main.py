@@ -22,7 +22,7 @@ def home():
         if request.method == "GET":
             reports = []
             for i in range(0, 10):
-                reports.append(Report(1, 1, 1))
+                reports.append(Report(1, 1, 1, 1, 1))
             # get latest X reports
 
     else:

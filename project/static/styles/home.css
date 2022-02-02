@@ -1,15 +1,25 @@
 div.container {
     width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.titleDiv {
+    width: 100%;
+    height: 10vh;
+    border-bottom: 2px solid #1F363D;
 }
 
 div.feed {
     overflow: auto;
+    width: 100%;
     height: 75vh;
 }
 
 div.report {
     border-bottom: 1px solid #1F363D;
-    height: 25vh;
+    height: 20vw;
     display: flex;
 }
 
@@ -19,8 +29,8 @@ div.dogImageDiv {
     flex: none;
     position: relative;
 
-    height: 310px;
-    width: 310px;
+    height: 90%;
+    width: 30%;
     margin: 5px;
 }
 
@@ -37,14 +47,14 @@ div.infoDiv {
 }
 
 div.navBar {
-    position: fixed;
-    bottom: 0px;
-    width: 65%;
+    width: 100%;
+    background-color: #DAF2EE;
+    height: 5vh;
 }
 
 nav {
     background-color: #0000;
-    font: 4vw "DogGo";
+    font: 8vh "DogGo";
     border-top: 2px solid #1F363D;
 }
 
@@ -53,13 +63,13 @@ a.navlink {
 }
 
 p.name {
-    font: bold 3vw "DogGo";
+    font: bold 4vw "DogGo";
     color: #1F363D;
     margin: 10px 0;
 }
 
 p.info {
-    font: 2vw "DogGo";
+    font: 3vw "DogGo";
     color: #1F363D;
     margin: 0;
 }
@@ -85,10 +95,12 @@ i:hover {
 
 h1 {
     font-weight: bold; 
-    margin: 30px; 
+    margin: 0; 
     color:#1F363D; 
     font-family: "DogGo"; 
     font-size: 60px;
+    position: relative;
+    top: -10px;
 }
 
 hr {

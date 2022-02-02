@@ -24,7 +24,6 @@
             {% if dogs|length == 0 %}
                 <p>No dogs</p>
             {% else %}
-                var index = 0;
                 {% for dog in dogs %}
                     <div class="dogListing">
                         <div class="dogImageDiv">
@@ -66,8 +65,7 @@
                     </div>
         
                     <hr>
-
-                    index = index + 1;
+                    
                 {% endfor %}
             {% endif %}
         {% endblock %}
