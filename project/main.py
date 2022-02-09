@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, g, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
+import datetime
 import os
 import project.database as db
 import project.validation as vd
@@ -107,10 +108,34 @@ def dogList():
         for data in dogs_query:
             dogs.append(Dog(*data)) # *data unpacks the tuple and passes values as positional arguments
             names.append(data[2])
+
+
     else:
         return render_template('error_401.html')
 
+    if request.method == 'POST':
+        if request.form['report_button'] == 'report':
+            print("Reported")
+
     return render_template('dogs/list.html', dogs=dogs, names=names)
+
+
+@app.route('/report/<string:id>', methods=['GET', 'POST'])
+def report(id):
+    dogID = id
+    lost = db.execute_query(f'SELECT lost FROM dog WHERE dogID=?', (dogID,), 'single')[0]
+    if lost == 0: # Create new report is dog is not lost (lost = 0)
+        userID = session['userID']
+        location = db.execute_query(f'SELECT location FROM dog WHERE dogID=?', (dogID,), 'single')[0]
+        date = datetime.date.today()
+        db.execute_query(f'INSERT INTO report VALUES (NULL, ?, ?, ?, ?)', (userID, dogID, location, date))
+        db.execute_query(f'UPDATE dog SET lost = ?, last_report = ? WHERE dogID == ?', (1, date, dogID))
+    else: # Revert changes if dog is lost (lost = 1)
+        db.execute_query(f'UPDATE dog SET lost = ? WHERE dogID == ?', (0, dogID))
+        db.execute_query(f'DELETE FROM report WHERE dogID=?', (dogID))
+
+
+    return redirect(url_for('dogList'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -119,7 +144,6 @@ def editDog():
 
     if request.method == "GET":
         id = request.args.get('id')
-        print(f"ID = {id}")
         dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0] # Query returns array so [0] gets item
         (name, age, sex, breed, location) = dog
 
@@ -178,7 +202,6 @@ def createDog():
                 flash(error)
 
             if error is None:
-                print("Inserting")
                 db.execute_query('INSERT INTO dog VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)', (session['userID'], name, age, sex, breed, 0, 'No report', location))
                 return redirect(url_for('dogList'))
             else:
