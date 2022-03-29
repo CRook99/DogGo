@@ -24,14 +24,17 @@
                         <div class="report">
                             <div class="dogImageDiv">
                                 <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of the reported dog">
-
                             </div>
 
                             <div class="infoDiv">
-                                <p class="name">Name</p>
-                                <p class="info">Lost on: Date</p>
-                                <p class="info">Lost in: Location</p>
+                                <p class="name">{{ report.name }}</p>
+                                <p class="info">Lost on: {{ report.date }}</p>
+                                <p class="info">Lost in: {{ report.location }}</p>
 
+                            </div>
+                            
+                            <div class="buttonDiv">
+                                <a href="/contact" class="phoneButton"><i class="fas fa-phone-flip"></i></a>
                             </div>
                             
                             

@@ -22,6 +22,7 @@ CREATE TABLE report (
     reportID INTEGER PRIMARY KEY NOT NULL UNIQUE,
     userID INTEGER NOT NULL,
     dogID INTEGER NOT NULL,
+    name TEXT NOT NULL,
     location TEXT NOT NULL,
     date TEXT NOT NULL,
     FOREIGN KEY (userID) REFERENCES user(userID),

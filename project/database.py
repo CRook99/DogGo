@@ -5,7 +5,12 @@ from flask import current_app, g
 def execute_query(query, params = None, type = 'multi'):
     con = sqlite3.connect('database.db')
     cur = con.cursor()
-    cur.execute(query, params)
+    if params is not None:
+        cur.execute(query, params)
+        print("not none")
+    else:
+        cur.execute(query)
+        print("none")
     con.commit()
     if type == 'single':
         fetch = cur.fetchone()

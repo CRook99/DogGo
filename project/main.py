@@ -13,7 +13,7 @@ app.secret_key = 'dev'
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 
 @app.route('/home', methods=['GET', 'POST'])
@@ -21,10 +21,23 @@ def home():
     if 'userID' in session:
 
         if request.method == "GET":
+            report_ids = db.execute_query(f'SELECT reportID, userID, dogID FROM report')
+            if report_ids == None:
+                print("Reports are none")
+
             reports = []
-            for i in range(0, 10):
-                reports.append(Report(1, 1, 1, 1, 1))
-            # get latest X reports
+            for ids in report_ids:
+                # USER-RELATED PROCESSES (getting telephone number etc.)
+
+
+
+                # DOG-RELATED PROCESSES (name, date, location)
+                object = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
+
+                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2]]
+                reports.append(Report(*(data)))
+
+            print(reports)
 
     else:
         return render_template('error_401.html')
@@ -123,12 +136,12 @@ def dogList():
 @app.route('/report/<string:id>', methods=['GET', 'POST'])
 def report(id):
     dogID = id
-    lost = db.execute_query(f'SELECT lost FROM dog WHERE dogID=?', (dogID,), 'single')[0]
-    if lost == 0: # Create new report is dog is not lost (lost = 0)
+    is_lost = db.execute_query(f'SELECT lost FROM dog WHERE dogID=?', (dogID,), 'single')[0]
+    if is_lost == 0: # Create new report is dog is not lost (lost = 0)
         userID = session['userID']
-        location = db.execute_query(f'SELECT location FROM dog WHERE dogID=?', (dogID,), 'single')[0]
+        name, location = db.execute_query(f'SELECT name, location FROM dog WHERE dogID=?', (dogID,), 'multi')[0]
         date = datetime.date.today()
-        db.execute_query(f'INSERT INTO report VALUES (NULL, ?, ?, ?, ?)', (userID, dogID, location, date))
+        db.execute_query(f'INSERT INTO report VALUES (NULL, ?, ?, ?, ?, ?)', (userID, dogID, name, date, location))
         db.execute_query(f'UPDATE dog SET lost = ?, last_report = ? WHERE dogID == ?', (1, date, dogID))
     else: # Revert changes if dog is lost (lost = 1)
         db.execute_query(f'UPDATE dog SET lost = ? WHERE dogID == ?', (0, dogID))
