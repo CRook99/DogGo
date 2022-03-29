@@ -50,8 +50,11 @@ div.buttonDiv {
     display: inline-block;
     order: 3;
     flex: none;
-    justify-content: center;
     
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 15%;
 }
 
@@ -82,7 +85,7 @@ p.name {
 }
 
 p.info {
-    font: 3vw "DogGo";
+    font: 2.5vw "DogGo";
     color: #1F363D;
     margin: 0;
 }

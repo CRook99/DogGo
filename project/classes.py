@@ -11,12 +11,13 @@ class Dog:
         self.location = location
 
 class Report:
-    def __init__(self, report_id, user_id, dog_id, name, date, location):
+    def __init__(self, report_id, user_id, dog_id, name, date, location, telephoneNo):
         self.report_id = report_id
         self.user_id = user_id
         self.dog_id = dog_id
         self.name = name
         self.date = date
         self.location = location
+        self.telephoneNo = telephoneNo
 
 

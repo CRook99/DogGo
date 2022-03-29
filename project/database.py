@@ -7,10 +7,8 @@ def execute_query(query, params = None, type = 'multi'):
     cur = con.cursor()
     if params is not None:
         cur.execute(query, params)
-        print("not none")
     else:
         cur.execute(query)
-        print("none")
     con.commit()
     if type == 'single':
         fetch = cur.fetchone()

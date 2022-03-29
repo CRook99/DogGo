@@ -30,12 +30,15 @@
                                 <p class="name">{{ report.name }}</p>
                                 <p class="info">Lost on: {{ report.date }}</p>
                                 <p class="info">Lost in: {{ report.location }}</p>
+                                <p class="info">Contact: {{ report.telephoneNo }}</p>
 
                             </div>
                             
+                            <!--
                             <div class="buttonDiv">
-                                <a href="/contact" class="phoneButton"><i class="fas fa-phone-flip"></i></a>
+                                <a href="/contact/{{ report.user_id }}" class="phoneButton"><i class="fas fa-phone-flip"></i></a>
                             </div>
+                            -->
                             
                             
 

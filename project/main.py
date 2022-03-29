@@ -29,12 +29,12 @@ def home():
             for ids in report_ids:
                 # USER-RELATED PROCESSES (getting telephone number etc.)
 
-
+                telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (ids[1],), 'single')[0]
 
                 # DOG-RELATED PROCESSES (name, date, location)
                 object = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
 
-                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2]]
+                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2], telephoneNo]
                 reports.append(Report(*(data)))
 
             print(reports)
@@ -149,6 +149,14 @@ def report(id):
 
 
     return redirect(url_for('dogList'))
+
+
+@app.route('/contact/<string:id>', methods=['GET', 'POST'])
+def contact(id):
+    userID = id
+    telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (userID,), 'single')[0]
+    print(telephoneNo)
+
 
 
 @app.route('/edit', methods=['GET', 'POST'])
