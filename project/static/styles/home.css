@@ -58,15 +58,19 @@ div.buttonDiv {
     width: 15%;
 }
 
+/*
 div.navBar {
     width: 100%;
     background-color: #DAF2EE;
     height: 5vh;
 }
+*/
 
 nav {
-    background-color: #0000;
+    width: 100%;
+    background-color: #DAF2EE;
     font: 8vh "DogGo";
+    height: 5vh;
     border-top: 2px solid #1F363D;
 }
 

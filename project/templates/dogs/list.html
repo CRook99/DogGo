@@ -16,67 +16,77 @@
 
 <body>
     <center>
-        <h1>My Dogs</h1>
+        <div class="container">
+            <div class="titleDiv">
+                <h1>My Dogs</h1>
+            </div>
+            
+            <div class="list">
+                {% block content %}
+                {% if dogs|length == 0 %}
+                    <p>No dogs</p>
+                {% else %}
+                    {% for dog in dogs %}
+                        <div class="dogListing">
+                            <div class="dogImageDiv">
+                                <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
+                            </div>
+
+                            {% if dog.lost == True %}
+                                {% set lost = 'Yes' %}
+                            {% else %}
+                                {% set lost = 'No' %}
+                            {% endif %}
+
+                            <div class="dogLeftPane">
+                                <p class="dogName">{{ dog.name }}</p>
+                                <p class="info">Last Report: {{ dog.last_report }}</p>
+                                <p class="info">Lost: {{ lost }}</p>
+                                <p class="info">Location: {{ dog.location }}</p>
+
+                            </div>
+
+                            <div class="dogRightPane">
+                                <p class="info">Age: {{ dog.age }}</p>
+                                <p class="info">Sex: {{ dog.sex }}</p>
+                                <p class="info">Breed: {{ dog.breed }}</p>
+                            </div>
+
+                            <div class="reportButton">
+                                <a href="/report/{{ dog.dog_id }}" name="report_button" value="report">
+                                    <i class="fas fa-bullhorn"></i>
+                                </a>
+                            </div>
+
+                            <div class="editButton">
+                                <a href="/edit?id={{ dog.dog_id }}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+                {% endblock %}
+                
+                <div class="plusButton">
+                    <a href="create">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                </div>
+                
+            </div>
+            
+            
         
-        <hr>
-        
-        {% block content %}
-            {% if dogs|length == 0 %}
-                <p>No dogs</p>
-            {% else %}
-                {% for dog in dogs %}
-                    <div class="dogListing">
-                        <div class="dogImageDiv">
-                            <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
-                        </div>
-                        
-                        {% if dog.lost == True %}
-                            {% set lost = 'Yes' %}
-                        {% else %}
-                            {% set lost = 'No' %}
-                        {% endif %}
-
-                        <div class="dogLeftPane">
-                            <p class="dogName">{{ dog.name }}</p>
-                            <p class="info">Last Report: {{ dog.last_report }}</p>
-                            <p class="info">Lost: {{ lost }}</p>
-                            <p class="info">Location: {{ dog.location }}</p>
-
-                        </div>
-
-                        <div class="dogRightPane">
-                            <p class="info">Age: {{ dog.age }}</p>
-                            <p class="info">Sex: {{ dog.sex }}</p>
-                            <p class="info">Breed: {{ dog.breed }}</p>
-                        </div>
-                        
-                        <div class="reportButton">
-                            <a href="/report/{{ dog.dog_id }}" name="report_button" value="report">
-                                <i class="fas fa-bullhorn"></i>
-                            </a>
-                        </div>
-
-                        <div class="editButton">
-                            <a href="/edit?id={{ dog.dog_id }}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </div>
-
-                    </div>
-        
-                    <hr>
-                    
-                {% endfor %}
-            {% endif %}
-        {% endblock %}
-        
-        <div class="plusButton">
-            <a href="create">
-                <i class="fas fa-plus-circle"></i>
-            </a>
         </div>
         
         
+        <nav>
+            <a href="/home" class="navlink"><i class="fas fa-search"></i></a>
+            <a href="#" class="navlink"><i class="fas fa-paw"></i></a>
+        </nav>
 
     </center>
     
