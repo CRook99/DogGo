@@ -19,7 +19,7 @@ div.list {
 
 div.dogListing {
     width: 100%;
-    height: 200px;
+    height: 9vw;
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #1F363D;
@@ -29,8 +29,8 @@ div.dogListing {
 div.dogImageDiv {
     order: 1;
     display: inline-block;
-    width: 200px;
-    height: 200px;
+    width: 12%;
+    height: 95%;
     flex: none;
     border: 1px solid #1F363D;
     position: relative;
@@ -63,7 +63,7 @@ div.dogRightPane {
 
 div.editButton{
     order: 5;
-    width: 100px;
+    width: 7%;
     display: inline-block;
     flex: none;
     
@@ -76,7 +76,7 @@ div.editButton{
 
 div.reportButton {
     order: 4;
-    width: 100px;
+    width: 7%;
     display: inline-block;
     flex: none;
     
@@ -117,6 +117,10 @@ a.navlink {
     margin: 0 5%;
 }
 
+a.action-button {
+    font-size: 3vw;
+}
+
 a{
     color: #1F363D;
     transition-duration: 0.4s;
@@ -135,13 +139,9 @@ hr {
 }
 
 img.dogImage {
-    width: 190px;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    margin: auto;
-    position: absolute;
-    top: 2.5%;
-    left: 2.5%;
 }
 
 h1 {
@@ -149,12 +149,12 @@ h1 {
     margin: 0; 
     color:#1F363D; 
     font-family: "DogGo"; 
-    font-size: 60px;
+    font-size: 5vh;
 }
 
 p.dogName {
     /*font-size: 50px;*/
-    font-size: 35px;
+    font-size: 1.7vw;
     font-weight: bold;
     color: #1F363D;
     font-family: "DogGo";
@@ -167,25 +167,43 @@ p.info {
     color: #1F363D;
     font-family: "DogGo";
     /*font-size: 30px;*/
-    font-size: 29px;
+    font-size: 1.3vw;
     margin: 2px;
 }
 
-@media screen and (max-width: 1500px) {
-    .dogRightPane {
-        display: none !important;
-    }
+p.dog-count {
+    color: #1F363D;
+    font-family: "DogGo";
+    font-weight: bold;
+    font-size: 3vh;
+}
+
+@media screen and (max-width: 1750px) {
+
     
-    p.info {
-        font-size: min(2.5vw, 29px);
-    }
+
 }
 
 @media screen and (min-width: 1600px) {  
+
+}
+
+
+/*
+
+    .dogRightPane {
+        display: none !important;
+    }
+
+    p.info {
+        font-size: min(2.5vw, 29px);
+    }
+
     p.info {
         font-size: 29px;
     }
-}
+
+*/
 
 input {
     border-color:#1F363D; 

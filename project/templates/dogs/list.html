@@ -53,13 +53,13 @@
                             </div>
 
                             <div class="reportButton">
-                                <a href="/report/{{ dog.dog_id }}" name="report_button" value="report">
+                                <a href="/report/{{ dog.dog_id }}" name="report_button" value="report" class="action-button">
                                     <i class="fas fa-bullhorn"></i>
                                 </a>
                             </div>
 
                             <div class="editButton">
-                                <a href="/edit?id={{ dog.dog_id }}">
+                                <a href="/edit?id={{ dog.dog_id }}" class="action-button">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </div>
@@ -67,14 +67,21 @@
                         </div>
 
                     {% endfor %}
-                {% endif %}
-                {% endblock %}
+                {% endif %}            
                 
-                <div class="plusButton">
-                    <a href="create">
-                        <i class="fas fa-plus-circle"></i>
-                    </a>
-                </div>
+                {% if dogs|length >= 5 %}
+                    <p class="dog-count">Cannot add more dogs</p>
+                {% else %}
+                    <div class="plusButton">
+                        <a href="create">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                
+                <p class="dog-count">{{ dogs|length }}/5</p>
+                
+                {% endblock %}
                 
             </div>
             

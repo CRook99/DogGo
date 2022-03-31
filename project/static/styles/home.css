@@ -114,13 +114,11 @@ i:hover {
 }
 
 h1 {
-    font-weight: bold; 
-    margin: 0; 
     color:#1F363D; 
+    font-weight: bold; 
     font-family: "DogGo"; 
-    font-size: 60px;
-    position: relative;
-    top: -10px;
+    font-size: 5vh;
+    margin: 0; 
 }
 
 hr {
