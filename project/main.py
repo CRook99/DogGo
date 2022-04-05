@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, g, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 import datetime
 import os
 import project.database as db
@@ -8,6 +9,9 @@ from project.classes import Dog, Report
 
 app = Flask(__name__)
 app.config.from_mapping(DATABASE = os.path.join(app.instance_path, 'schema.sql'))
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # Limits image upload size to 8MB (1024 * 1024 = 1MB)
+UPLOAD_FOLDER = 'static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'dev'
 
 
@@ -22,9 +26,6 @@ def home():
 
         if request.method == "GET":
             report_ids = db.execute_query(f'SELECT reportID, userID, dogID FROM report')
-            if report_ids == None:
-                print("Reports are none")
-
             reports = []
             for ids in report_ids:
                 # USER-RELATED PROCESSES (getting telephone number etc.)
@@ -36,8 +37,6 @@ def home():
 
                 data = [ids[0], ids[1], ids[2], object[0], object[1], object[2], telephoneNo]
                 reports.append(Report(*(data)))
-
-            print(reports)
 
     else:
         return render_template('error_401.html')
@@ -115,8 +114,6 @@ def dogList():
     if 'userID' in session:
         dogs = []
         names = []
-        ID = session['userID']
-        query = 'SELECT name, age, sex, breed, lost, last_report, location FROM dog WHERE dog.userID=?'
         dogs_query = db.execute_query('SELECT * FROM dog WHERE dog.userID=?', (session['userID'],))
         for data in dogs_query:
             dogs.append(Dog(*data)) # *data unpacks the tuple and passes values as positional arguments
@@ -126,10 +123,6 @@ def dogList():
     else:
         return render_template('error_401.html')
 
-    if request.method == 'POST':
-        if request.form['report_button'] == 'report':
-            print("Reported")
-
     return render_template('dogs/list.html', dogs=dogs, names=names)
 
 
@@ -138,11 +131,26 @@ def report(id):
     dogID = id
     is_lost = db.execute_query(f'SELECT lost FROM dog WHERE dogID=?', (dogID,), 'single')[0]
     if is_lost == 0: # Create new report is dog is not lost (lost = 0)
+
+        # DATE COMPARISON
+        last_report = db.execute_query(f'SELECT last_report FROM dog WHERE dogID=?', (dogID,), 'single')[0]
+        if last_report == 'No report':
+            pass
+        else:
+            last_report_date = datetime.datetime.strptime(last_report, "%Y-%m-%d") # Converts last report into a comparable datetime object
+            present = datetime.datetime.now()
+            delta = last_report_date.date() - present.date() # Determines number of days between last report and present day
+            if delta.days < 7:
+                flash(f'You must wait {delta.days} days before reporting your dog as missing again')
+                return redirect(url_for('dogList'))
+
         userID = session['userID']
         name, location = db.execute_query(f'SELECT name, location FROM dog WHERE dogID=?', (dogID,), 'multi')[0]
         date = datetime.date.today()
         db.execute_query(f'INSERT INTO report VALUES (NULL, ?, ?, ?, ?, ?)', (userID, dogID, name, date, location))
         db.execute_query(f'UPDATE dog SET lost = ?, last_report = ? WHERE dogID == ?', (1, date, dogID))
+
+
     else: # Revert changes if dog is lost (lost = 1)
         db.execute_query(f'UPDATE dog SET lost = ? WHERE dogID == ?', (0, dogID))
         db.execute_query(f'DELETE FROM report WHERE dogID=?', (dogID))
@@ -175,26 +183,32 @@ def editDog():
         breed = request.form['breed_input']
         location = request.form['location_input']
         id = request.form['id_hidden']
-
-        error = None
+        image = request.files['image_input']
 
         if request.form['button'] == 'delete':
             db.execute_query('DELETE FROM dog WHERE dogID=?', (id,))
+            db.execute_query('DELETE FROM report WHERE dogID=?', (id,)) # Deletes all reports for this dog
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{id}.png")
+            os.remove(file_path)
             return redirect(url_for('dogList'))
 
         elif request.form['button'] == 'submit':
+            error = None
             if not vd.validateDogName(name):
                 error = 'Invalid name - must be between 1 and 20 characters'
                 flash(error)
             if not vd.validateBreedName(breed):
                 error = 'Invalid breed - must be between 1 and 50 characters'
                 flash(error)
+            if image.filename == '':
+                error = 'You must upload an image of your dog of type PNG or JPG, no more than 8MB'
+                flash(error)
 
             if error is None:
                 db.execute_query('UPDATE dog SET name=?, age=?, sex=?, breed=?, location=? WHERE dogID=?', (name, age, sex, breed, location, id))
+                image.filename = id + '.png' # Renames uploaded file to be the ID of this dog
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
                 return redirect(url_for('dogList'))
-            else:
-                pass
 
     return render_template('dogs/edit.html', id=id, name=name, age=age, sex=sex, breed=breed, location=location)
 
@@ -209,9 +223,11 @@ def createDog():
         sex = request.form['sex_input']
         breed = request.form['breed_input']
         location = request.form['location_input']
+        image = request.files['image_input']
 
-        error = None
+
         if request.form['submit_button'] == 'submit':
+            error = None
             if not vd.validateDogName(name):
                 error = 'Invalid name - must be between 1 and 20 characters'
                 flash(error)
@@ -221,12 +237,16 @@ def createDog():
             if not vd.validateAge(age):
                 error = 'Invalid age - please enter a number'
                 flash(error)
+            if image.filename == '':
+                error = 'You must upload an image of your dog of type PNG or JPG, no more than 8MB'
+                flash(error)
 
             if error is None:
                 db.execute_query('INSERT INTO dog VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)', (session['userID'], name, age, sex, breed, 0, 'No report', location))
+                id = db.execute_query('SELECT dogID FROM dog ORDER BY dogID DESC LIMIT 1', None, 'single')[0]
+                image.filename = str(id) + '.png'  # Renames uploaded file to be the ID of this dog
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
                 return redirect(url_for('dogList'))
-            else:
-                pass
 
     return render_template('dogs/create.html')
 

@@ -26,6 +26,7 @@
             document.getElementById("breed_input").value = '{{ breed }}';
             document.getElementById("location_input").value = '{{ location }}';
             document.getElementById("id_hidden").value = '{{ id }}';
+            document.getElementById("image").src = "/static/images/" + {{ id }} + ".png";
         }
         
         
@@ -38,14 +39,17 @@
         <h1>Scout</h1>
         
         <div class="dogImageDiv">
-            <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
+            <img class="dogImage" id="image" alt="A picture of your dog">
+            
         </div>
         
         <br>
         
-        <input type="file" class="img_upload" accept=".png, .jpg">
         
-        <form method="post" action="/edit">
+        
+        <form method="post" action="/edit" enctype="multipart/form-data">
+            <input type="file" name="image_input" class="img_upload" accept=".png, .jpg">
+            
             <div class="infoDiv">
                 <p class="info"><b>Name:</b>
                     <input class="text_box" id="name_input" name="name_input" minlength="1" maxlength="20">

@@ -7,30 +7,42 @@
     <title>DogGo - My Dogs</title>
     <link rel="stylesheet" href="/static/styles/list.css">
     <script src="https://kit.fontawesome.com/c2d72c318c.js" crossorigin="anonymous"></script>
-    <script>
-        function report(index) {
-            confirm(`Are you sure you want to report %{} as missing?`);
-        }
-    </script>
 </head>
 
 <body>
     <center>
+        <div class="error">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="info" style="font-size: 1vw">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        
         <div class="container">
             <div class="titleDiv">
                 <h1>My Dogs</h1>
+                
+                
+                
             </div>
             
             <div class="list">
                 {% block content %}
-                {% if dogs|length == 0 %}
-                    <p>No dogs</p>
-                {% else %}
                     {% for dog in dogs %}
                         <div class="dogListing">
-                            <div class="dogImageDiv">
-                                <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of your dog">
+                            <div class="dogImageDiv" id="dogImageDiv">
+                                <img class="dogImage" id="image" alt="A picture of your dog">
                             </div>
+                            
+                            <script>
+                                console.log("/static/images/" + {{ dog.dog_id }} + ".png");
+                                var newID = "image" + {{ loop.index }};
+                                document.getElementById("image").id = newID;
+                                document.getElementById(newID).src = "/static/images/" + {{ dog.dog_id }} + ".png";
+                            </script>
 
                             {% if dog.lost == True %}
                                 {% set lost = 'Yes' %}
@@ -56,6 +68,8 @@
                                 <a href="/report/{{ dog.dog_id }}" name="report_button" value="report" class="action-button">
                                     <i class="fas fa-bullhorn"></i>
                                 </a>
+                                
+                                
                             </div>
 
                             <div class="editButton">
@@ -67,7 +81,6 @@
                         </div>
 
                     {% endfor %}
-                {% endif %}            
                 
                 {% if dogs|length >= 5 %}
                     <p class="dog-count">Cannot add more dogs</p>

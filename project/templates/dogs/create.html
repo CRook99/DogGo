@@ -20,9 +20,11 @@
         
         <br>
         
-        <input type="file" class="img_upload" accept=".png, .jpg">
         
-        <form method="post" action="/create">
+        
+        <form method="post" action="/create" enctype="multipart/form-data">
+            <input type="file" name="image_input" class="img_upload" accept=".png, .jpg">
+            
             <div class="infoDiv">
                 <p class="info"><b>Name:</b>
                     <input class="text_box" id="name_input" name="name_input" minlength="1" maxlength="20">

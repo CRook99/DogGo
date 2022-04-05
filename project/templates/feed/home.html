@@ -23,8 +23,14 @@
 
                         <div class="report">
                             <div class="dogImageDiv">
-                                <img class="dogImage" src="{{url_for('static', filename='DogGo_Placeholder.png')}}" alt="A picture of the reported dog">
+                                <img class="dogImage" id="image" alt="A picture of the reported dog">
                             </div>
+                            
+                            <script>
+                                var newID = "image" + {{ loop.index }};
+                                document.getElementById("image").id = newID;
+                                document.getElementById(newID).src = "/static/images/" + {{ report.dog_id }} + ".png";
+                            </script>
 
                             <div class="infoDiv">
                                 <p class="name">{{ report.name }}</p>
