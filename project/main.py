@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, g, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
 import datetime
 import os
 import project.database as db
@@ -17,31 +16,7 @@ app.secret_key = 'dev'
 
 @app.route('/')
 def index():
-    return redirect(url_for('home'))
-
-
-@app.route('/home', methods=['GET', 'POST'])
-def home():
-    if 'userID' in session:
-
-        if request.method == "GET":
-            report_ids = db.execute_query(f'SELECT reportID, userID, dogID FROM report')
-            reports = []
-            for ids in report_ids:
-                # USER-RELATED PROCESSES (getting telephone number etc.)
-
-                telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (ids[1],), 'single')[0]
-
-                # DOG-RELATED PROCESSES (name, date, location)
-                object = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
-
-                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2], telephoneNo]
-                reports.append(Report(*(data)))
-
-    else:
-        return render_template('error_401.html')
-
-    return render_template('feed/home.html', reports=reports)
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -107,6 +82,30 @@ def register():
     return render_template('auth/register.html')
 
 
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    if 'userID' in session:
+
+        if request.method == "GET":
+            report_ids = db.execute_query(f'SELECT reportID, userID, dogID FROM report ORDER BY reportID DESC LIMIT 20')
+            reports = []
+            for ids in report_ids:
+                # USER-RELATED PROCESSES (getting telephone number etc.)
+
+                telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (ids[1],), 'single')[0]
+
+                # DOG-RELATED PROCESSES (name, date, location)
+                object = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
+
+                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2], telephoneNo]
+                reports.append(Report(*(data)))
+
+    else:
+        return render_template('error_401.html')
+
+    return render_template('feed/home.html', reports=reports)
+
+
 @app.route('/dogs', methods=['GET', 'POST'])
 def dogList():
     title = "My Dogs"
@@ -139,7 +138,7 @@ def report(id):
         else:
             last_report_date = datetime.datetime.strptime(last_report, "%Y-%m-%d") # Converts last report into a comparable datetime object
             present = datetime.datetime.now()
-            delta = last_report_date.date() - present.date() # Determines number of days between last report and present day
+            delta = present.date() - last_report_date.date() # Determines number of days between last report and present day
             if delta.days < 7:
                 flash(f'You must wait {delta.days} days before reporting your dog as missing again')
                 return redirect(url_for('dogList'))
@@ -186,28 +185,30 @@ def editDog():
         image = request.files['image_input']
 
         if request.form['button'] == 'delete':
+            db.execute_query('DELETE FROM report WHERE dogID=?', (id,))  # Deletes all reports for this dog
             db.execute_query('DELETE FROM dog WHERE dogID=?', (id,))
-            db.execute_query('DELETE FROM report WHERE dogID=?', (id,)) # Deletes all reports for this dog
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{id}.png")
             os.remove(file_path)
             return redirect(url_for('dogList'))
 
         elif request.form['button'] == 'submit':
             error = None
-            if not vd.validateDogName(name):
+            if not vd.validateName(name):
                 error = 'Invalid name - must be between 1 and 20 characters'
                 flash(error)
-            if not vd.validateBreedName(breed):
-                error = 'Invalid breed - must be between 1 and 50 characters'
+            if not vd.validateAge(age):
+                error = 'Invalid age - please enter a number'
                 flash(error)
-            if image.filename == '':
-                error = 'You must upload an image of your dog of type PNG or JPG, no more than 8MB'
+            if not vd.validateBreed(breed):
+                error = 'Invalid breed - must be between 1 and 50 characters'
                 flash(error)
 
             if error is None:
                 db.execute_query('UPDATE dog SET name=?, age=?, sex=?, breed=?, location=? WHERE dogID=?', (name, age, sex, breed, location, id))
-                image.filename = id + '.png' # Renames uploaded file to be the ID of this dog
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+                if image:
+                    image.filename = id + '.png' # Renames uploaded file to be the ID of this dog
+                    image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+
                 return redirect(url_for('dogList'))
 
     return render_template('dogs/edit.html', id=id, name=name, age=age, sex=sex, breed=breed, location=location)
@@ -228,10 +229,10 @@ def createDog():
 
         if request.form['submit_button'] == 'submit':
             error = None
-            if not vd.validateDogName(name):
+            if not vd.validateName(name):
                 error = 'Invalid name - must be between 1 and 20 characters'
                 flash(error)
-            if not vd.validateBreedName(breed):
+            if not vd.validateBreed(breed):
                 error = 'Invalid breed - must be between 1 and 50 characters'
                 flash(error)
             if not vd.validateAge(age):

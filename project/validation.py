@@ -3,6 +3,7 @@ import re
 
 def validateEmail(email):
     return not (re.search(r"[^@]{1,64}@[^@]{1,253}\.[^@]{2,}", email) is None)
+
     # Regex expression to check whether submitted email follows conventions
     # [^@]{1,64} finds a recipient name of maximum 64 characters
     # @ finds the required @ symbol that separates the name and domain
@@ -13,9 +14,13 @@ def validateEmail(email):
 
 def validatePassword(password):
     valid = True
-    if ((re.search(r"\d", password) is None) or (re.search(r"(?=.*[A-Z])", password) is None) or (re.search(r"^.{8,32}$", password) is None)):
+    if (re.search(r"\d", password) is None) or (re.search(r"(?=.*[A-Z])", password) is None) or (re.search(r"^.{8,32}$", password) is None):
         valid = False
     return valid
+
+    # First expression decides if a digit is present
+    # Second expression decides if an uppercase character is present
+    # Third expression decides if the password is between 8-32 characters long
 
 
 def validateTel(tel):
@@ -24,23 +29,32 @@ def validateTel(tel):
 
 
 def matchPasswords(password, confirmPassword):
-    return password == confirmPassword # Returns whether the first password and the confirmation password match
+    return password == confirmPassword
+
+    # Returns whether the first password and the confirmation password match
 
 
-def validateDogName(name):
+def validateName(name):
     return 1 <= len(name) <= 20 and name != None
 
 
-def validateBreedName(breed):
-    return 1 <= len(breed) <= 50 and breed != None
-
-
 def validateAge(age):
-    return 1 <= int(age) <= 20 and age != None
+    try:
+        age = int(age)
+    except:
+        return False
+
+    # Returns false if input is not an integer
+
+    return 1 <= int(age) <= 20
 
 
 def validateSex(sex):
     return (sex == "M" or sex == "F") and sex != None
+
+
+def validateBreed(breed):
+    return 1 <= len(breed) <= 50 and breed != None
 
 
 def validateLocation(location):
