@@ -26,11 +26,13 @@ def login():
         password = request.form["password"]
         if request.form["login_button"] == "login":
             try:
-                user = db.execute_query("SELECT userID, email, password FROM user WHERE email = ?", (email,))[0] # Tries to find a user with given email
-                if check_password_hash(user[2], password):  # 1 = index of password value // Evaluates hashed given password against hashed stored password
-                    session.clear()
-                    session['userID'] = user[0] # user[0] = The accounts userID
-                    return redirect(url_for('dogList')) # Will redirect to feed
+                user = db.execute_query("SELECT userID, email, password FROM user WHERE email = ?", (email,))[0]
+                # Tries to find a user with given email
+
+                if check_password_hash(user[2], password): # Evaluates hashed given password against hashed stored password
+                    session.clear() # Refreshes session and redirects to user profile
+                    session['userID'] = user[0]
+                    return redirect(url_for('dogList'))
                 else:
                     flash("Incorrect password")
             except:
@@ -42,6 +44,8 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
+
+        # Data collection
         email = request.form["email"]
         telephoneNo = request.form["telephoneNo"]
         password = request.form["password"]
@@ -51,7 +55,7 @@ def register():
         if request.form["register_button"] == "register":
             empty = False
             if not email:
-                flash('Email required', 'empty')
+                flash('Email required', 'empty') # Unfilled fields flashed as errors to user
                 empty = True
             if not telephoneNo:
                 flash('Telephone number required', 'empty')
@@ -63,6 +67,7 @@ def register():
                 flash('Re-enter password', 'empty')
                 empty = True
 
+            # Validation only occurs if fields are filled
             if not empty:
                 if not vd.validateEmail(email):
                     error = 'Invalid email'
@@ -88,19 +93,29 @@ def home():
 
         if request.method == "GET":
             report_ids = db.execute_query(f'SELECT reportID, userID, dogID FROM report ORDER BY reportID DESC LIMIT 20')
+            # Gets the IDs of the 20 latest reports
+
             reports = []
             for ids in report_ids:
-                # USER-RELATED PROCESSES (getting telephone number etc.)
 
                 telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (ids[1],), 'single')[0]
 
-                # DOG-RELATED PROCESSES (name, date, location)
-                object = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
+                dog = db.execute_query(f'SELECT name, last_report, location FROM dog WHERE dogID=?', (ids[2],))[0]
 
-                data = [ids[0], ids[1], ids[2], object[0], object[1], object[2], telephoneNo]
-                reports.append(Report(*(data)))
+                data = [ids[0], ids[1], ids[2], dog[0], dog[1], dog[2], telephoneNo]
+                '''
+                List of data items to be added to the report
+                ids[0] = Report ID
+                ids[1] = User ID
+                ids[2] = Dog ID
+                dog[0] = Dog name
+                dog[1] = Dog last report date
+                dog[2] = Dog location
+                telephoneNo = User telephone number
+                '''
+                reports.append(Report(*(data)))  # data list unpacked to be passed into Report object
 
-    else:
+    else:  # User not granted access if not authorised/in session
         return render_template('error_401.html')
 
     return render_template('feed/home.html', reports=reports)
@@ -125,7 +140,7 @@ def dogList():
     return render_template('dogs/list.html', dogs=dogs, names=names)
 
 
-@app.route('/report/<string:id>', methods=['GET', 'POST'])
+@app.route('/report/<string:id>', methods=['GET', 'POST'])  # Dog ID is passed into function as parameter
 def report(id):
     dogID = id
     is_lost = db.execute_query(f'SELECT lost FROM dog WHERE dogID=?', (dogID,), 'single')[0]
@@ -149,31 +164,30 @@ def report(id):
         db.execute_query(f'INSERT INTO report VALUES (NULL, ?, ?, ?, ?, ?)', (userID, dogID, name, date, location))
         db.execute_query(f'UPDATE dog SET lost = ?, last_report = ? WHERE dogID == ?', (1, date, dogID))
 
-
     else: # Revert changes if dog is lost (lost = 1)
         db.execute_query(f'UPDATE dog SET lost = ? WHERE dogID == ?', (0, dogID))
         db.execute_query(f'DELETE FROM report WHERE dogID=?', (dogID))
 
-
     return redirect(url_for('dogList'))
-
-
-@app.route('/contact/<string:id>', methods=['GET', 'POST'])
-def contact(id):
-    userID = id
-    telephoneNo = db.execute_query(f'SELECT telephoneNo FROM user WHERE userID=?', (userID,), 'single')[0]
-    print(telephoneNo)
-
 
 
 @app.route('/edit', methods=['GET', 'POST'])
 def editDog():
     title = "Editing"
 
+    if 'userID' in session:
+        userID = db.execute_query('SELECT userID FROM dog WHERE dog.dogID=?', (request.args.get('id'),), 'single')[0]
+        if userID != session['userID']:
+            return render_template('error_401.html')
+
+    else:
+        return render_template('error_401.html')
+
     if request.method == "GET":
         id = request.args.get('id')
-        dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0] # Query returns array so [0] gets item
-        (name, age, sex, breed, location) = dog
+        dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0]
+        # Query returns array so [0] gets item
+        (name, age, sex, breed, location) = dog  # Retrieved values mapped to tuple
 
     if request.method == "POST":
         name = request.form['name_input']
@@ -185,9 +199,11 @@ def editDog():
         image = request.files['image_input']
 
         if request.form['button'] == 'delete':
-            db.execute_query('DELETE FROM report WHERE dogID=?', (id,))  # Deletes all reports for this dog
+            db.execute_query('DELETE FROM report WHERE dogID=?', (id,))
+            # Deletes all reports for this dog - referential integrity
+
             db.execute_query('DELETE FROM dog WHERE dogID=?', (id,))
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{id}.png")
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{id}.png")  # Dog image removed
             os.remove(file_path)
             return redirect(url_for('dogList'))
 

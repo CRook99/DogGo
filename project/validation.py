@@ -2,25 +2,35 @@ import re
 
 
 def validateEmail(email):
+    '''
+        Regex expression to check whether submitted email follows conventions
+        [^@]{1,64} finds a recipient name of maximum 64 characters
+        @ finds the required @ symbol that separates the name and domain
+        [^@]{1,253} finds a domain of maximum 253 characters
+        \. finds the required . symbol that separates the domain and top-level domain
+        [^@]{2,} finds the top-level domain of minimum 2 characters
+    '''
+
     return not (re.search(r"[^@]{1,64}@[^@]{1,253}\.[^@]{2,}", email) is None)
 
-    # Regex expression to check whether submitted email follows conventions
-    # [^@]{1,64} finds a recipient name of maximum 64 characters
-    # @ finds the required @ symbol that separates the name and domain
-    # [^@]{1,253} finds a domain of maximum 253 characters
-    # \. finds the required . symbol that separates the domain and top-level domain
-    # [^@]{2,} finds the top-level domain of minimum 2 characters
+
+
 
 
 def validatePassword(password):
     valid = True
+
+    '''
+    First expression decides if a digit is present
+    Second expression decides if an uppercase character is present
+    Third expression decides if the password is between 8-32 characters long
+    '''
+
     if (re.search(r"\d", password) is None) or (re.search(r"(?=.*[A-Z])", password) is None) or (re.search(r"^.{8,32}$", password) is None):
         valid = False
     return valid
 
-    # First expression decides if a digit is present
-    # Second expression decides if an uppercase character is present
-    # Third expression decides if the password is between 8-32 characters long
+
 
 
 def validateTel(tel):
