@@ -175,16 +175,18 @@ def report(id):
 def editDog():
     title = "Editing"
 
-    if 'userID' in session:
-        userID = db.execute_query('SELECT userID FROM dog WHERE dog.dogID=?', (request.args.get('id'),), 'single')[0]
-        if userID != session['userID']:
-            return render_template('error_401.html')
-
-    else:
-        return render_template('error_401.html')
-
     if request.method == "GET":
         id = request.args.get('id')
+
+        if 'userID' in session:
+            userID = db.execute_query('SELECT userID FROM dog WHERE dog.dogID=?', (id,), 'single')[
+                0]
+            if userID != session['userID']:
+                return render_template('error_401.html')
+
+        else:
+            return render_template('error_401.html')
+
         dog = db.execute_query('SELECT name, age, sex, breed, location FROM dog WHERE dogID=?', (id,))[0]
         # Query returns array so [0] gets item
         (name, age, sex, breed, location) = dog  # Retrieved values mapped to tuple
